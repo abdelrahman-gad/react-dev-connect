@@ -3,11 +3,12 @@ import {connect} from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import {firestoreConnect} from 'react-redux-firebase';
 import {compose } from 'redux';
+import {showReadableDate} from '../../utils/utilsFuncs';
 
 class Developers extends React.Component{
 
     render(){
-        const {auth,users,profiles}  = this.props;
+        const {auth,developers}  = this.props;
         console.log(auth.uid);
         
 
@@ -15,33 +16,14 @@ class Developers extends React.Component{
             return (<Redirect exact to="/" />)
         }else{
 
-            if(! (users && profiles) ){
-                return (<div className="container">
-                           <h1 className="text-center text-primary loading">Loading Data .....</h1>
-                        </div>);
+            if(!developers){
+                return (
+                    <div className="container">
+                         <h1 className="text-primary text-center loading"> Loading Developers ....... </h1>
+                    </div>
+             ); 
             }else{
-
-               console.log(users);
-               console.log(profiles);
-                             
-                let developers = users.map((user,i)=>Object.assign({},user,profiles[i]));
-               console.log(developers);
-              developers =  developers.map(user=>{
-                
-                    return { 
-                        handle:user.handle,
-                        id:user.userId,
-                        jobTitle:user.jobTitle,
-                        location:user.location,
-                        imageUrl:user.imageUrl,
-                        skills:user.skills
-                    };
-                });
-                console.log(developers);
-                developers = developers.filter(developer=>developer.handle!==undefined && developer.id!==undefined);              
-                console.log(developers);
-
-                return(
+                  return(
                     <section className="container">
                         <h1 className="large text-primary">
                          Developers
@@ -52,6 +34,8 @@ class Developers extends React.Component{
                         </p>
                         <div className="profiles">
                            {developers && developers.map(developer=>{
+
+                          
                             return (
                                        
                                         <div className="profile bg-light p-2"  key={developer.id}>
@@ -64,7 +48,7 @@ class Developers extends React.Component{
                                                 <h1> {developer.handle} </h1>
                                                 <p> {developer.jobTitle} </p>
                                                 <p> {developer.location} </p>
-                                                
+                                                <p className="text-primary"> Joined at {showReadableDate(developer.createdAt)} </p>
                                                 <NavLink exact to={"/profile/"+developer.id} target="_parent" className="btn btn-primary">View Profile</NavLink>
                                             </div>
                                              {developer.skills !== undefined ?  <ul> {developer.skills.map((skill,i)=><li className="text-primary" key={i} ><i className="fas fa-check"></i> {skill} </li>)} </ul>:null  }
@@ -76,21 +60,49 @@ class Developers extends React.Component{
                         })}
                      </div>
                   </section>
-                   );    
-    
-            }
-        }
-
+                );  
+            } 
+         }
     }
 }
 
 const mapStateToProps = (state)=>{
+     
+     const auth=state.firebase.auth;
+      let users=state.firestore.ordered.users;
+     let  profiles=state.firestore.ordered.profiles;
+     console.log(auth);
+     console.log(users);
+     console.log(profiles);
+     if(!(users && profiles)){
+        return {
+            auth
+         }
+     }else{
+         let developers = users.map(user=>{
+               let matchedProfile = profiles.filter(profile=>profile.userId===user.userId);
+                   matchedProfile  = matchedProfile? matchedProfile[0]:undefined;
+                   console.log(matchedProfile);
+                   if(matchedProfile){
+                        return {
+                            ...user,
+                            ...matchedProfile
+                            
+                        }
+                   }else{
+                       return {
+                           ...user
+                       }
+                   }
+               
+         });
+            console.log(developers);
+         return {
+             auth,
+             developers
+         }
+     }
     
-    return {
-         auth:state.firebase.auth,
-         users:state.firestore.ordered.users,
-         profiles:state.firestore.ordered.profiles
-    }
 }
 
 export default compose(

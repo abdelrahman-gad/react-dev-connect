@@ -1,5 +1,6 @@
 const initState={
-    authError:null
+    authError:null,
+    deleteAccountError:null
 }
 const authReducer = ( state= initState , action ) =>{
     switch(action.type){
@@ -33,7 +34,17 @@ const authReducer = ( state= initState , action ) =>{
             return{
                 ...state,
                 authError:action.payload
-            }   
+            }  
+        case 'ACCOUNT_DELETE_SUCCESS':
+            console.log('account deleted successfully');
+            return  state;
+        case 'ACCOUNT_DELETE_ERROR':
+            console.log('account deleting error');
+            return {
+                ...state,
+                deleteAccountError:action.payload
+            }       
+            
         default:
             return {
                 ...state,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { firestoreConnect } from 'react-redux-firebase';
 import {Redirect} from 'react-router-dom';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
@@ -11,7 +10,7 @@ class AddEducation extends React.Component{
     constructor(props){
        super(props);
        
-       console.log(props);
+     //  console.log(props);
        
         this.state = {
              school:'',
@@ -40,19 +39,18 @@ class AddEducation extends React.Component{
         });
       //console.log(this.state);
     }
-  
-  
+    
     handleSubmit(e){
       e.preventDefault();
        const {addEducation } = this.props;
        const {school,degree,fromDate,toDate,field,description}=this.state;
        let inputsArray= [school,degree,fromDate,toDate,description];
-       if(inputsArray.some(input=>input.length===0)){
+       if(inputsArray.some(input=>input.length === 0)){
          this.setState({
              emptyInputsError:'Please fill up all required inputs'
          });
        }else{
-         console.log('all fields are filled');
+        // console.log('all fields are filled');
         addEducation({school,degree,fromDate,toDate,field,description});
         this.setState({
           emptyInputsError:''
@@ -61,7 +59,7 @@ class AddEducation extends React.Component{
       }
     }
     render(){
-        console.log('add education component');
+     //   console.log('add education component');
         const { auth  } = this.props;
         if(!auth.uid){
           return (<Redirect exact to="/" />);

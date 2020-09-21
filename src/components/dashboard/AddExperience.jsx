@@ -1,5 +1,4 @@
 import React from 'react';
-import { firestoreConnect } from 'react-redux-firebase';
 import {Redirect} from 'react-router-dom';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
@@ -11,7 +10,7 @@ class AddExperience extends React.Component{
     constructor(props){
        super(props);
        
-       console.log(props);
+       ////console.log(props);
        
         this.state={
              jobTitle:'',
@@ -31,7 +30,7 @@ class AddExperience extends React.Component{
   
     handleChange(e){
       e.preventDefault();
-    //  console.log(e.target.id,e.target.value);
+      //console.log(e.target.id,e.target.value);
        this.setState({
         [e.target.id]:e.target.value
         });
@@ -49,12 +48,12 @@ class AddExperience extends React.Component{
              emptyInputsError:'Please fill up all required inputs'
          });
        }else{
-         console.log('all inputs are filled');
+         //console.log('all inputs are filled');
        addExperience({jobTitle,company,description,location,fromDate,toDate});
         this.setState({
           emptyInputsError:''
         });
-        console.log('from handleSubmit in component');
+        //console.log('from handleSubmit in component');
         this.props.history.push('/dashboard');
       }
     }

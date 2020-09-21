@@ -20,7 +20,7 @@ class EditProfileImage extends React.Component{
            noSelectedImgError:null
           }
       //  this.props.profileImageUrl= 'mdmad';
-        console.log(this.props);
+        //console.log(this.props);
         this.handleChange=this.handleChange.bind(this);
         this.handleUpload=this.handleUpload.bind(this);
         
@@ -30,7 +30,7 @@ class EditProfileImage extends React.Component{
     componentWillReceiveProps(nextProps){
           // console.log(nextProps);
           const { user } = nextProps;
-            if(user!==undefined){
+            if(user !== undefined){
               this.mapProfileImageUrlToState(user.imageUrl);
             }
 
@@ -42,20 +42,20 @@ class EditProfileImage extends React.Component{
 
     }
     handleChange(e){
-      console.log('file choosen');
+      //console.log('file choosen');
            if(e.target.files[0]){
-             console.log(e.target.files[0]);
+             //console.log(e.target.files[0]);
              this.setState({
                  profileImage:e.target.files[0]
              });
              this.setState({
                noSelectedImgError:null
              })
-             console.log(this.state.profileImage);
+             //console.log(this.state.profileImage);
            }
     }
     handleUpload(e){
-        console.log('handle-upload');
+        //console.log('handle-upload');
         // console.log(this.state.profileImage);
         if(this.state.profileImage){
         const uploadTask = storage.ref(`images/profiles/${this.state.profileImage.name}`).put(this.state.profileImage);
@@ -71,21 +71,21 @@ class EditProfileImage extends React.Component{
               })
             },
             error => {
-              console.log(error);
+              //console.log(error);
             },
             () => {
                 storage.ref('images/profiles')
                 .child(this.state.profileImage.name)
                 .getDownloadURL()
                 .then( url => {
-                  console.log(url);
+                  //console.log(url);
                   const { editProfileImage } = this.props;
                   editProfileImage(url);
                 })         
             }
         );
         }else{
-          console.log('Plz , select picture file before submitting');
+          //console.log('Plz , select picture file before submitting');
           this.setState({
             noSelectedImgError:'Plz , select picture file before submitting'
           })
@@ -101,10 +101,10 @@ class EditProfileImage extends React.Component{
     render(){
         //console.log(storage);
         const {user, auth } = this.props;
-        console.log(auth)
-        console.log(user);
+        //console.log(auth)
+        //console.log(user);
 
-          if(!auth){
+          if(!auth.uid){
             return <Redirect exact to="/" />
           }else{
             if( user ){
@@ -157,8 +157,8 @@ const mapStateToProps = (state,ownProps)=>{
   let users = state.firestore.data.users;
   let user = users ? users[userId]: null;
 
-  console.log(users);
-  console.log(user);
+  //console.log(users);
+  //console.log(user);
  
   if( state.firebase.auth.uid && user ){
     return {
@@ -173,7 +173,7 @@ const mapStateToProps = (state,ownProps)=>{
   } else return {};
 }
 const mapDispatchToProps= (dispatch)=>{
-  console.log('in mapDispatch');
+  //console.log('in mapDispatch');
       return {
         editProfileImage: (profileImage) =>dispatch(editProfileImage(profileImage))
       } 

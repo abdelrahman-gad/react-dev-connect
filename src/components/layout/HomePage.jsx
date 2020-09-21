@@ -1,6 +1,4 @@
 import React  from 'react';
-import SigndInLinks from './SignedInLinks';
-import SignedOutLinks from './SignedOutLinks';
 import { NavLink, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -9,7 +7,7 @@ class HomePage extends React.Component {
 
 
     render(){
-           const { auth , profile , authError } = this.props;
+           const { auth  , authError } = this.props;
            let links=   <div className="buttons">
                             <NavLink to="/signup" className="btn btn-primary">sign up</NavLink>
                             <NavLink to="/signin" className="btn">login</NavLink>

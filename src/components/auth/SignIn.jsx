@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Redirect,NavLink} from 'react-router-dom';
 import {signIn } from '../../store/actions/authActions';
-import {emailRegex} from '../../variables';
+
 
 
 
@@ -37,8 +37,8 @@ handleSubmit = (e) => {
 render(){
   const {authError , auth  } = this.props;
   let alert =  authError ? <div className="alert alert-danger"> {authError} </div>:"";
- console.log('from sign in component');
-  console.log(auth.uid);
+//  console.log('from sign in component');
+//   console.log(auth.uid);
   if(authError || !auth.uid ){
   return (
     <section className="container">
@@ -91,7 +91,7 @@ const mapDispatchToProps = (dispatch)=>{
 }
 const mapStateToProps = (state)=>{
   const auth = state.firebase.auth;
-      console.log(state);
+      // console.log(state);
   return {
     authError:state.auth.authError,
     auth:auth

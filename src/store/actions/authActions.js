@@ -4,8 +4,7 @@ export const signIn = (credentials) => {
     
       firebase.auth().signInWithEmailAndPassword(credentials.email,credentials.password)
       .then(()=> dispatch({type:'SIGNIN_SUCCESS'}))
-      .catch((err)=> 
-         { 
+      .catch((err)=> { 
             
             dispatch({type:'SIGNIN_ERROR',payload:err.message})
         });
@@ -55,5 +54,22 @@ export const signUp = (newUser) =>{
            });
              
 
+    }
+}
+
+
+
+
+
+
+export const deleteAccount = ( accountId )=>{
+    console.log('delete account from actions');
+    console.log(accountId);
+    return (dispatch, getState , {getFirebase , getFirestore} )=>{
+        const firebase= getFirebase();
+        var  account = firebase.auth().currentUser;
+        console.log(account);
+        account.delete().then(() => dispatch({type:'ACCOUNT_DELETE_SUCCESS'}) )
+        .catch( (err)=> dispatch( {type:'ACCOUNT_DELETE_ERROR', payload:err.message}));
     }
 }

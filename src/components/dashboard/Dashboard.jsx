@@ -1,5 +1,4 @@
 import React from 'react';
-import Posts from '../posts/Posts';
 
 
 import {connect} from 'react-redux';
@@ -11,11 +10,11 @@ class Dashboard  extends React.Component {
      
      render(){
       const { auth , profile } = this.props; 
-      console.log(profile);
-     if(auth.uid===undefined){
+      //console.log(profile);
+     if(auth.uid === undefined){
          return  <Redirect to="/" />
      } else{
-          console.log(profile.imageUrl);
+          //console.log(profile.imageUrl);
           return (
                <section className="container"> 
                 
@@ -30,7 +29,7 @@ class Dashboard  extends React.Component {
                        <div>
                         
                       {
-                       profile.imageUrl!=undefined ? <img  className="profile-img" src={profile.imageUrl} alt="user image"/>:<img  className="profile-img" src={process.env.PUBLIC_URL+'/imgs/default-user-img.jpeg'} />
+                       profile.imageUrl!== undefined ? <img  className="profile-img" src={profile.imageUrl} alt="user image"/>:<img  className="profile-img" src={process.env.PUBLIC_URL+'/imgs/default-user-img.jpeg'} />
                       }
                        
                      
@@ -49,10 +48,14 @@ class Dashboard  extends React.Component {
                             <i className="fab fa-black-tie text-primary mr-2"></i>
                             <span> Add Exprerience  </span>
                        </NavLink>
-                       <NavLink to={"/addEducation/"+auth.uid }className="btn">
+                       <NavLink to={"/addEducation/"+auth.uid } className="btn">
                            <i className="fas fa-graduation-cap text-primary mr-2"></i>
                            <span> Add Eduction  </span>
                        </NavLink>
+                       <NavLink className="btn" exact to={"/developerPosts/"+auth.uid} >
+                             <i className="fas fa-comment-alt text-primary mr-2"></i>
+                             <span>  my Posts </span> 
+                       </NavLink>                             
                        </div>
    
    {/* end users action */}

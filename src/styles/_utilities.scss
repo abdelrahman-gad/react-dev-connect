@@ -21,14 +21,8 @@
 .profile-img{
   width: 500px;
   height: 500px;
-  margin: 20px auto;
-  
+  margin: 20px auto;  
   border-radius: 50%;
-}
-
-.username{
-  position: absolute;
-  left: 90px;
 }
 
 .line{
@@ -214,6 +208,33 @@ table{
 }
 
 // modals 
+
+
+
+.modal-show{
+  display: block !important;
+}
+
+.modal{
+  position: fixed;
+  width: 60%;
+  top:50%;
+  /* color: #fff; */
+  left: 50%;
+  transform: translate(-50%,-50%);
+  height: 170px;
+  margin: auto;
+  background-color:#ddd;
+  display: none;
+}
+.modal-text{
+  padding: 20px;
+  font-size :22px;
+}
+// end modal 
+
+
+
 
 
 

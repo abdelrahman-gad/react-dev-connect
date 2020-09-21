@@ -52,11 +52,14 @@
   h1 {
     margin-bottom: 1rem;
   }
-
-  .dash-buttons a {
-    display: block;
+  li{
     width: 100%;
-    margin-bottom: 0.2rem;
+    a {
+      display: block;
+      width: 100%;
+      margin-bottom: 0.2rem;
+    }
+  
   }
 }
 
@@ -70,7 +73,6 @@
   top:36px;
   left:0; 
   width: 204px;
-  
   background-color: #444;
   display: none;
 }

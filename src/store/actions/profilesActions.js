@@ -1,6 +1,4 @@
-import { auth } from "firebase";
 import {v4 as uuid4} from 'uuid';
-import { isEmpty } from "react-redux-firebase";
 export const editProfileImage = (profileImageUrl)=>{
     return (dispatch,getState,{getFirebase,getFirestore})=>{
         console.log('editprofile image from actions');

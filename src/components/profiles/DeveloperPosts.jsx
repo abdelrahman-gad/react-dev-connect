@@ -1,15 +1,18 @@
 import React from 'react';
-import AddPost from './AddPost';
-import PostSummary from './PostSummary';
+import PostSummary from '../posts/PostSummary';
+import AddPost from '../posts/AddPost';
 import { firestoreConnect } from 'react-redux-firebase';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import { Redirect } from 'react-router-dom';
-class Posts extends React.Component{
+class DeveloperPosts extends React.Component{
+ 
+  
+ 
 
    render(){
      //console.log('render');
-       const { completePosts ,  auth} = this.props; 
+       const { completePosts ,  auth , developerId } = this.props; 
           
        //console.log(auth);
 
@@ -19,11 +22,11 @@ class Posts extends React.Component{
          if(! completePosts ){
             return (
                      <div className="container">
-                         <h2 className="text-primary  text-center loadin ">Loading data.....</h2>
+                         <h2 className="text-primary  text-center loadin ">Loading Posts .....</h2>
                     </div>
                     );
          }else{
-           //console.log(completePosts);
+           console.log(completePosts);
           return(
             <section className="container" >
             <h1 className="large text-primary">
@@ -32,11 +35,13 @@ class Posts extends React.Component{
             <p className="lead"><i className="fas fa-user"></i> Welcome to the community</p>
       
             <div className="post-form">
-            <AddPost props={this.props}/>
+             {auth.uid === developerId ? <AddPost props={this.props}/> : null }  
+            
               <div className="posts">       
-                {completePosts ?
-                 completePosts.map(post=> <PostSummary key={post.postId} post={post} auth={auth} />)
-                :<h1  className="text-primary text-center"> No posts added yet </h1>}
+                {completePosts.length > 0 ?
+                 completePosts.map( post => <PostSummary key={post.postId} post={post} auth={auth} />) 
+                 : <h1 className="text-center text-primary"> There is no posts for this developer  </h1>
+                }
               </div>
             </div>
           </section>
@@ -49,19 +54,20 @@ class Posts extends React.Component{
 
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state,ownProps) =>{
       let auth =state.firebase.auth;
+      let developerId = ownProps.match.params.id;
       let posts = state.firestore.ordered.posts;
-      let users=state.firestore.data.users;
+       
+      let users = state.firestore.data.users;
       let comments =state.firestore.ordered.comments;
       let reacts =state.firestore.ordered.reacts;
-      //console.log(auth);
-      //console.log(posts);
-      //console.log(users);
-      //console.log(comments);
-      //console.log(reacts);
+     // console.log(auth);
+     // console.log(posts);
+     
      if(posts && users && comments && reacts ){
-
+         // get Posts of one specific user
+         posts = posts.filter(post => post.userId === developerId);
       let completePosts = posts.map(post=>{
               // fetch comments belongst to this specific post 
           let    filteredComments = comments.filter(comment=>comment.postId === post.postId) 
@@ -85,7 +91,8 @@ const mapStateToProps = (state) =>{
         //console.log('All data are loaded');
             return{
               auth,
-              completePosts
+              completePosts,
+              developerId
               }
           } else return {
             auth
@@ -124,9 +131,8 @@ export default compose(
        { collection:'posts'},
        { collection:'users'},
        { collection:'comments'},
-       { collection:'reacts'},
-
+       { collection:'reacts'}
     ])
     
-)  ( Posts);
+)  ( DeveloperPosts);
 
