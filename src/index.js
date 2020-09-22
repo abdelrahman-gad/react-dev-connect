@@ -12,8 +12,8 @@ import * as serviceWorker from './serviceWorker';
 
  import {createStore , applyMiddleware , compose} from 'redux';
  import rootReducer from './store/reducers/rootReducer';
-import thunk from 'redux-thunk';
-import {
+ import thunk from 'redux-thunk';
+ import {
   createFirestoreInstance,
   getFirestore,
   reduxFirestore
