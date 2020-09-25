@@ -1,5 +1,20 @@
 import {v4 as uuid4} from 'uuid';
-export const editProfileImage = (profileImageUrl)=>{
+import {  
+            EDIT_PROFILEIMAGE_SUCCESS , 
+            EDIT_PROFILEIMAGE_ERROR , 
+            EDIT_PROFILE_SUCCESS , 
+            EDIT_PROFILE_ERROR , 
+            ADD_EXPERIENCE_SUCCESS , 
+            ADD_EXPERIENCE_ERROR , 
+            DELETE_EXPERIENCE_SUCCESS ,
+            DELETE_EXPERIENCE_ERROR , 
+            ADD_EDUCATION_SUCCESS , 
+            ADD_EDUCATION_ERROR , 
+            DELETE_EDUCATION_SUCCESS ,
+            DELETE_EDUCATION_ERROR 
+        } 
+        from './actions';
+export const editProfileImage = ( profileImageUrl ) => {
     return (dispatch,getState,{getFirebase,getFirestore})=>{
         console.log('editprofile image from actions');
         const firestore = getFirestore();
@@ -7,9 +22,9 @@ export const editProfileImage = (profileImageUrl)=>{
         firestore.collection('users').doc(authorId).update({
             imageUrl:profileImageUrl
         }).then(()=>{
-            dispatch({type:'EDIT_PROFILEIMAGE_SUCCESS'});
+            dispatch({type:EDIT_PROFILEIMAGE_SUCCESS});
         }).catch(err=>{
-           dispatch( {type:'EDIT_PROFILEIMAGE_ERROR',peyload:err.message});
+           dispatch( {type:EDIT_PROFILEIMAGE_ERROR, peyload: err.message});
         });
     }
 }
@@ -36,14 +51,12 @@ export const editProfile = (editableProfile) => {
                 userHandle:profile.handle,      
                 userId:authorId
             }).then(()=>{
-              dispatch({type:'EDIT_PROFILE_SUCCESS'});
-            }).catch(err=>{
-                console.log(err);
-            });
+                 dispatch({type:EDIT_PROFILE_SUCCESS});
+            }).catch(err=> dispatch({type:EDIT_PROFILE_ERROR, payload: err.message}));
     }
 }
 
-export const addExperience = (experience) => { 
+export const addExperience = ( experience ) => { 
        return (dispatch , getState , { getFirebase  ,  getFirestore})=>{
              //  console.log(experience);
              const firestore = getFirestore();
@@ -57,9 +70,9 @@ export const addExperience = (experience) => {
                        id:experienceId,
                        userId:authorId
                     }).then(()=>{
-                        dispatch({type:'ADD_EXPERIENCE_SUCCESS'});
+                        dispatch({type:ADD_EXPERIENCE_SUCCESS});
                     }).catch(err=>{
-                        dispatch({type:'ADD_EXPERIENCE_ERROR',peyload:err.message});
+                        dispatch({type:ADD_EXPERIENCE_ERROR, payload:err.message});
                     });
                     
     }
@@ -73,9 +86,9 @@ export const deleteExperience=(experienceId)=>{
         const firestore = getFirestore();
         firestore.collection('experiences').doc(experienceId).delete()
            .then(()=>{
-                dispatch({type:'DELETE_EXPERIENCE_SUCCESS'});
+                dispatch({type:DELETE_EXPERIENCE_SUCCESS});
             }).catch(err=>{
-                dispatch({type:'DELETE_EXPERIENCE_ERROR',payload:err.message});
+                dispatch({type:DELETE_EXPERIENCE_ERROR,payload:err.message});
             });                
    }
 }
@@ -103,9 +116,9 @@ export const addEducation = (education)=>{
                     id:educationId,
                     userId:authorId
                  }).then(()=>{
-                     dispatch({type:'ADD_EDUCATION_SUCCESS'});
+                     dispatch({type:ADD_EDUCATION_SUCCESS});
                  }).catch(err=>{
-                     dispatch({type:'ADD_EDUCATION_ERROR',peyload:err.message});
+                     dispatch({type:ADD_EDUCATION_ERROR , peyload: err.message });
                  });
   }
 }
@@ -117,9 +130,9 @@ export const deleteEducation=(educationId)=>{
         const firestore = getFirestore();
         firestore.collection('educations').doc(educationId).delete()
            .then(()=>{
-                dispatch({type:'DELETE_EDUCATION_SUCCESS'});
+                dispatch({type:DELETE_EDUCATION_SUCCESS});
             }).catch(err=>{
-                dispatch({type:'DELETE_EDUCATION_ERROR'});
+                dispatch({type:DELETE_EDUCATION_ERROR , payload: err.message });
             });                
    }
 }

@@ -1,12 +1,24 @@
+import {   
+             SIGNUP_SUCCESS , 
+             SIGNUP_ERROR , 
+             SIGNIN_SUCCESS ,
+             SIGNIN_ERROR ,
+             LOGOUT_SUCCESS,
+             LOGOUT_ERROR ,
+             ACCOUNT_DELETE_SUCCESS,
+             ACCOUNT_DELETE_ERROR
+            
+            } from './actions';
+
+
 export const signIn = (credentials) => {
     return (dispatch,getState,{getFirebase,getFirestore})=> {
       const firebase = getFirebase();
     
       firebase.auth().signInWithEmailAndPassword(credentials.email,credentials.password)
-      .then(()=> dispatch({type:'SIGNIN_SUCCESS'}))
-      .catch((err)=> { 
-            
-            dispatch({type:'SIGNIN_ERROR',payload:err.message})
+      .then( () => dispatch({type:SIGNIN_SUCCESS}))
+      .catch(err => {         
+            dispatch({type:SIGNIN_ERROR,payload:err.message})
         });
    
             
@@ -19,8 +31,8 @@ export const  logOut = () =>{
         const firebase = getFirebase();
   
         firebase.auth().signOut().then(() => {
-          dispatch({ type: 'LOGOUT_SUCCESS' });
-        });
+          dispatch({ type: LOGOUT_SUCCESS });
+        }).catch(err=> dispatch({type:LOGOUT_ERROR , payload: err.message}) );
 
     }
 }
@@ -33,7 +45,7 @@ export const signUp = (newUser) =>{
          firebase.auth().createUserWithEmailAndPassword(
              newUser.email,
              newUser.password
-         ).then( (resp) => {
+         ).then( resp => {
             resp.user.updateProfile({
                 photoURL:'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'
             });
@@ -48,9 +60,9 @@ export const signUp = (newUser) =>{
              })
            }).then(()=>{
                
-                dispatch({type:'SIGNUP_SUCCESS'});
-           }).catch((err)=>{
-                dispatch({type:'SIGNUP_ERROR',err});
+                dispatch({type:SIGNUP_SUCCESS});
+           }).catch(err => {
+                dispatch({type:SIGNUP_ERROR,payload:err.message});
            });
              
 
@@ -62,14 +74,14 @@ export const signUp = (newUser) =>{
 
 
 
-export const deleteAccount = ( accountId )=>{
+export const deleteAccount = (  ) => {
     console.log('delete account from actions');
-    console.log(accountId);
+  //  console.log(accountId);
     return (dispatch, getState , {getFirebase , getFirestore} )=>{
         const firebase= getFirebase();
-        var  account = firebase.auth().currentUser;
-        console.log(account);
-        account.delete().then(() => dispatch({type:'ACCOUNT_DELETE_SUCCESS'}) )
-        .catch( (err)=> dispatch( {type:'ACCOUNT_DELETE_ERROR', payload:err.message}));
+         var  account = firebase.auth().currentUser;
+     //    console.log(account);
+         account.delete().then(() => dispatch({type:ACCOUNT_DELETE_SUCCESS}))
+        .catch( err => dispatch( {type:ACCOUNT_DELETE_ERROR, payload:err.message}));
     }
 }

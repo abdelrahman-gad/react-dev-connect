@@ -130,17 +130,18 @@ const mapStateToProps = (state)=>{
     //   //console.log(userId);
     // //    let  profiles = state.firestore.data;
     let experiences=state.firestore.ordered.experiences;
+    const auth = state.firebase.auth;
+    const profile=state.firebase.profile;
     //console.log(state);
-      if(experiences!==undefined){
+      if(experiences){
           experiences=experiences.filter(experience => experience.userId===userId);
         return{
-            auth:state.firebase.auth,
-            profile:state.firebase.profile,
-            experiences:experiences
+            auth,
+            profile,
+            experiences
        }  
-      }else{
-          return {};
-      }
+      } else return {};
+      
 }
 const mapDispatchToProps=(dispatch,ownProps)=>{
   //  console.log(ownProps);

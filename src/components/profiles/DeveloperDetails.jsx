@@ -19,7 +19,7 @@ class DeveloperDetails extends React.Component{
         }
 
     render(){
-            let  {auth , developer} = this.props;
+            let  { auth , developer } = this.props;
             if(!auth.uid){
                 return <Redirect exact to="/" />
             }else{
@@ -34,7 +34,7 @@ class DeveloperDetails extends React.Component{
                    
                   
                    
-                   let {educations , experiences , socialLinks } = developer;
+                   let { educations , experiences , socialLinks } = developer;
                    
                     // console.log(experiences);
                     // console.log(educations);
@@ -218,14 +218,9 @@ class DeveloperDetails extends React.Component{
           return {
             auth,
             developer    
-          };
-        }else {
-
-        
-           return {
-             auth
-           }
-          }
+           };
+          }else  return { auth }
+          
         
         }
 

@@ -76,7 +76,7 @@ class  SigndInLinks extends Component  {
                >
               {
                 notifications && notifications.map(notification=>{
-                  return      (
+                  return      ( 
                                 <NavLink 
                                       exact to={notification.notifiableLink}
                                       key={notification.notificationId}
@@ -88,10 +88,9 @@ class  SigndInLinks extends Component  {
                                           {notification.body}
                                         </span> 
                                         <span> at  { showReadableDateTime(notification.createdAt)} </span>
-                                  </NavLink>
-                                
-                                );
-                })
+                                  </NavLink>                            
+                                    );
+                                   })
               
               }
              
@@ -131,7 +130,6 @@ const mapStateToProps = (state)=>{
   if(notifications){
      notifications = notifications.filter(notification => notification.notifiedId === auth.uid && notification.notifiedId !== notification.notifierId )
      notifications= notifications.sort( (a,b) => b.createdAt.seconds - a.createdAt.seconds );
-
    //  console.log(notifications);  
   }
   return {

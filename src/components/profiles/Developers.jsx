@@ -96,7 +96,7 @@ const mapStateToProps = (state)=>{
                    }
                
          });
-            console.log(developers);
+            //console.log(developers);
          return {
              auth,
              developers
@@ -107,6 +107,9 @@ const mapStateToProps = (state)=>{
 
 export default compose(
     connect(mapStateToProps,null),
-    firestoreConnect([{collection:'users'},{collection:'profiles'}])
+    firestoreConnect([
+        {collection:'users'},
+        {collection:'profiles'}
+      ])
   )
   (Developers);

@@ -1,4 +1,11 @@
-import {v4 as uuid4} from 'uuid';
+import {v4 as uuid4} from 'uuid'; 
+import {
+      ADD_COMMENT_SUCCESS ,
+      ADD_COMMENT_ERROR,
+      DELETE_COMMENT_SUCCESS , 
+      DELETE_COMMENT_ERROR 
+    }  from './actions';
+
 
 export const addComment = (comment) =>{
    //  console.log(comment);
@@ -12,8 +19,8 @@ export const addComment = (comment) =>{
             ...comment,
             commentId:commentId,
             createdAt:new Date()     
-        }).then(()=>dispatch({type:'ADD_COMMENT_SUCCESS'}))
-          .catch(err=>dispatch({type:'ADD_COMMENT_ERROR',payload:err.message}));
+        }).then(()=>dispatch({type:ADD_COMMENT_SUCCESS}))
+          .catch(err=>dispatch({type:ADD_COMMENT_ERROR,payload:err.message}));
 
 
          let notificationId= uuid4(); 
@@ -43,8 +50,8 @@ export const deleteComment= (commentId)=>{
     return (dispatch,getState, {getFirebase, getFirestore } )=>{
        const firestore= getFirestore();
        firestore.collection('comments').doc(commentId).delete()
-       .then(()=>dispatch({type:'DELETE_COMMENT_SUCCESS'}))
-       .catch(err=>dispatch({type:'DELETE_COMMENT_ERROR',payload:err.message}))
+       .then(()=>dispatch({type:DELETE_COMMENT_SUCCESS}))
+       .catch(err=>dispatch({type:DELETE_COMMENT_ERROR , payload: err.message }))
 
     }
 }

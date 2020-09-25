@@ -68,9 +68,9 @@ const mapStateToProps = (state,ownProps) =>{
      if(posts && users && comments && reacts ){
          // get Posts of one specific user
          posts = posts.filter(post => post.userId === developerId);
-      let completePosts = posts.map(post=>{
+         let completePosts = posts.map( post =>{
               // fetch comments belongst to this specific post 
-          let    filteredComments = comments.filter(comment=>comment.postId === post.postId) 
+           let    filteredComments = comments.filter(comment=>comment.postId === post.postId) 
                                  .map(comment=>{   
                                   return {
                                     ...comment,                                 
@@ -90,13 +90,11 @@ const mapStateToProps = (state,ownProps) =>{
         //console.log(completePosts);
         //console.log('All data are loaded');
             return{
-              auth,
-              completePosts,
-              developerId
+                auth,
+                completePosts,
+                developerId
               }
-          } else return {
-            auth
-          };
+          } else return { auth };
 
       // the format of post we want to map to props
       //  [

@@ -1,4 +1,14 @@
 import {v4 as uuid4} from 'uuid';
+ 
+import {  
+        ADD_POST_SUCCESS ,
+        ADD_POST_ERROR ,
+        DELETE_POST_SUCCESS , 
+        DELETE_POST_ERROR, 
+        EDIT_POST_SUCCESS ,
+        EDIT_POST_ERROR
+       } from './actions';
+
 export const addPost = (post)=>{
     return (dispatch,getState,{getFirebase,getFirestore})=>{
         
@@ -16,9 +26,9 @@ export const addPost = (post)=>{
             userId:authorId,
             createdAt: new Date()
         }).then(()=>{
-          dispatch({type:'ADD_POST_SUCCESS'})
+          dispatch({type:ADD_POST_SUCCESS})
        }).catch((err)=>{
-           dispatch({type:'ADD_POST_ERROR',payload:err.message})
+           dispatch({type:ADD_POST_ERROR,payload:err.message})
        });
 
        
@@ -32,8 +42,8 @@ export const deletePost= (postId)=>{
         const firestore= getFirestore();
 
         firestore.collection('posts').doc(postId).delete()
-                  .then( () => dispatch({type:'DELETE_POST_SUCCESS'}))
-                  .catch( (err) => dispatch({type:'DELETE_POST_ERROR',payload:err.message}));
+                  .then( () => dispatch({type:DELETE_POST_SUCCESS}))
+                  .catch( (err) => dispatch({type:DELETE_POST_ERROR,payload:err.message}));
     }
 }
 
@@ -48,8 +58,8 @@ export const editPost = (updPost)=>{
               firestore.collection('posts').doc(updPost.postId)
                        .set({
                            ...updPost
-                       }).then(()=>dispatch({type:'EDIT_POST_SUCCESS'}))
-                         .catch((err)=>dispatch({type:'EDIT_POST_ERROR',payload:err.message})); 
+                       }).then(()=>dispatch({type:EDIT_POST_SUCCESS}))
+                         .catch((err)=>dispatch({type:EDIT_POST_ERROR, payload: err.message })); 
      }
 }
 

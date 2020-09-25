@@ -1,6 +1,4 @@
 import React from 'react';
-
-
 import {connect} from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import {firestoreConnect} from 'react-redux-firebase';
@@ -11,12 +9,12 @@ class Dashboard  extends React.Component {
      render(){
       const { auth , profile } = this.props; 
       //console.log(profile);
-     if(auth.uid === undefined){
+      if(auth.uid === undefined){
          return  <Redirect to="/" />
-     } else{
+       } else{
           //console.log(profile.imageUrl);
           return (
-               <section className="container"> 
+                <section className="container"> 
                 
                        <h1 className="large text-primary">
                          My Profile Page
@@ -61,7 +59,7 @@ class Dashboard  extends React.Component {
    {/* end users action */}
    
    {/* profile data */}
-                <AuthUserDetails  />
+                    <AuthUserDetails  />
    {/* end profile data */}
                </section>
    
@@ -73,9 +71,11 @@ class Dashboard  extends React.Component {
 }
 
 const mapStateToProps = (state) =>{
+   const   auth   = state.firebase.auth;
+   const   profile =state.firebase.profile;
      return {
-        auth:state.firebase.auth,
-        profile:state.firebase.profile
+        auth,
+        profile
      }
 }
 

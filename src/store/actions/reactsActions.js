@@ -1,8 +1,14 @@
 import {v4 as uuid4} from 'uuid';
+import {  
+           ADD_REACT_SUCCESS,
+           ADD_REACT_ERROR , 
+           DELETE_REACT_SUCCESS ,
+           DELETE_REACT_ERROR
+ } from './actions';
 
 export const addReact = ( react ) => {
    // console.log(react);
-    return (dispatch, getState , {getFirebase,getFirestore})=>{
+    return (dispatch, getState , { getFirebase , getFirestore})=>{
 
         // let   commentId = uuid4(); 
         const firestore = getFirestore();
@@ -25,8 +31,8 @@ export const addReact = ( react ) => {
                 if(oldReactObj.reactType === react.reactType){
                     // toggle React delete there is a record
                     firestore.collection('reacts').doc(oldReactObj.reactId).delete()
-                              .then(()=>dispatch({type:'DELTETE_REACT_SUCCESS'}))
-                              .catch(err=>dispatch({type:'DELETE_REACT_ERROR',payload:err.message}));
+                              .then(()=>dispatch({type:DELETE_REACT_SUCCESS}))
+                              .catch(err=>dispatch({type:DELETE_REACT_ERROR,payload:err.message}));
 
                 }else{
                     firestore.collection('reacts').doc(oldReactObj.reactId).set({
@@ -35,9 +41,9 @@ export const addReact = ( react ) => {
                         reactType:react.reactType,
                         createdAt:new Date()     
     
-                    }).then(()=>dispatch({type:'ADD_REACT_SUCCESS'}))
-                    .catch(err=>dispatch({type:'ADD_REACT_ERROR',payload:err.message}));
-                    notifyReact(react, posts, comments,firestore);
+                    }).then(()=>dispatch({type:ADD_REACT_SUCCESS}))
+                    .catch(err=>dispatch({type:ADD_REACT_ERROR , payload:err.message}));
+                     notifyReact(react, posts, comments,firestore);
                 }
             
             }else{
@@ -48,8 +54,8 @@ export const addReact = ( react ) => {
                     ...react,
                     reactId,
                     createdAt:new Date()     
-                }).then(()=>dispatch({type:'ADD_REACT_SUCCESS'}))
-                .catch(err=>dispatch({type:'ADD_REACT_ERROR',payload:err.message}));
+                }).then(()=>dispatch({type:ADD_REACT_SUCCESS}))
+                .catch(err=>dispatch({type:ADD_REACT_ERROR,payload:err.message}));
                 
                 notifyReact(react,posts,comments,firestore);
             }        

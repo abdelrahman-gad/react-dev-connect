@@ -48,9 +48,11 @@ class HomePage extends React.Component {
 
 
 const mapStateToProps = (state) => {
+       const  auth =state.firebase.auth;
+        const profile=state.firebase.profile;
      return{
-         auth:state.firebase.auth ,
-         profile:state.firebase.profile,
+         auth ,
+         profile,
          authError:state.auth.authError
      }
 }

@@ -11,26 +11,21 @@ class AuthUserDetails extends React.Component{
     constructor(props){
         super(props);
         this.state={
-             showConfirm:false,
-             deleteElementId:undefined
+             showConfirm:false
+          
          }
          this.handleDelete=this.handleDelete.bind(this);
          this.handleConfirmDelete = this.handleConfirmDelete.bind(this); 
          this.handleCancelDelete = this.handleCancelDelete.bind(this); 
     
     }
-    handleDelete(e , accountId ){
-        e.preventDefault();
-        console.log(accountId);
-    }
-
-    handleDelete(e, educationId){
+  
+    handleDelete(e){
         //console.log('handleDelete education method');
         //console.log(educationId);
         e.preventDefault();
         this.setState({
-            showConfirm:true,
-            deleteElementId:educationId
+            showConfirm:true      
         });
     //    console.log(this.state);
        
@@ -39,16 +34,15 @@ class AuthUserDetails extends React.Component{
        this.props.deleteAccount(this.state.deleteElementId);
        e.preventDefault();
        this.setState({
-           showConfirm:false,
-           deleteElementId:undefined
+           showConfirm:false      
        });
     }
 
     handleCancelDelete(e){
         e.preventDefault();
         this.setState({
-            showConfirm:false,
-            deleteElementId:undefined
+            showConfirm:false
+           
         });
     }
 
@@ -57,7 +51,7 @@ class AuthUserDetails extends React.Component{
     render(){
         //console.log('from Auth user Details');
         //console.log(this.props);
-        const {auth} = this.props;
+        const { auth } = this.props;
         // console.log(auth.uid);
         return  (
             <div>
@@ -91,7 +85,7 @@ class AuthUserDetails extends React.Component{
                     <div className="my-2">
                     <button 
                          className="btn btn-danger"
-                         onClick={(e) => this.handleDelete( e , auth.uid ) }
+                         onClick={(e) => this.handleDelete( e ) }
                          >
                         <i className="fas fa-user-minus">Delete My Account</i>
                     </button>
@@ -102,15 +96,17 @@ class AuthUserDetails extends React.Component{
 }
 
 const mapStateToProps = (state) =>{
+    const auth=state.firebase.auth;
+    const profile = state.firebase.profile;
     return {
-       auth:state.firebase.auth,
-       profile:state.firebase.profile     
+       auth,
+       profile    
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps )=>{
+const mapDispatchToProps = (dispatch )=>{
     return {
-        deleteAccount: (accountId)=>dispatch(deleteAccount(accountId)) 
+        deleteAccount: () => dispatch(deleteAccount()) 
     }
 }
 

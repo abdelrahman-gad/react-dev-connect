@@ -97,8 +97,8 @@ const mapStateToProps = (state ,ownProps )=>{
     const postId= ownProps.match.params.id;
     const posts = state.firestore.data.posts;
     const post = posts ? posts[postId]:undefined;
-    console.log(posts);
-    console.log(post);
+    // console.log(posts);
+    // console.log(post);
 
     if(auth && post ){
         return{
@@ -124,4 +124,4 @@ const mapDispatchToProps = (dispatch,ownProps)=>{
 export default   compose(
                     connect(mapStateToProps,mapDispatchToProps),
                     firestoreConnect([{collection:'posts'}])
-                    )(EditPost);
+                    ) (EditPost);

@@ -37,7 +37,7 @@ class EditProfileImage extends React.Component{
     }
     mapProfileImageUrlToState(profileImageUrl){
       this.setState({
-             profileImageUrl:profileImageUrl
+             profileImageUrl
       });             
 
     }
@@ -89,13 +89,8 @@ class EditProfileImage extends React.Component{
           this.setState({
             noSelectedImgError:'Plz , select picture file before submitting'
           })
-        }
-
-        
-       
+        }     
        // console.log(uploadTask);
-
-
     }
     
     render(){
@@ -137,9 +132,11 @@ class EditProfileImage extends React.Component{
 
                 
             }else {
-              return (<div className="container">
-                        <h1 className="text-center text-primary loading">Loading user's data ....... </h1>
-                    </div>);
+              return (
+                       <div className="container">
+                        <h1 className="text-center text-primary loading"> Loading user's data ....... </h1>
+                      </div>
+                      );
 
             }
           } 
@@ -152,7 +149,7 @@ class EditProfileImage extends React.Component{
 const mapStateToProps = (state,ownProps)=>{
   const userId = ownProps.match.params.id;
 
- 
+  const auth =state.firebase.auth;
 
   let users = state.firestore.data.users;
   let user = users ? users[userId]: null;
@@ -160,15 +157,15 @@ const mapStateToProps = (state,ownProps)=>{
   //console.log(users);
   //console.log(user);
  
-  if( state.firebase.auth.uid && user ){
+  if( auth.uid && user ){
     return {
-      auth:state.firebase.auth,
-      user:user
+      auth,
+      user
 
     };
-  }else if(state.firebase.auth.uid){
+  }else if(auth.uid){
      return {
-       auth:state.firebase.auth
+       auth
      }
   } else return {};
 }
@@ -182,8 +179,8 @@ const mapDispatchToProps= (dispatch)=>{
 
 
 export default  compose 
-(
-  connect(mapStateToProps,mapDispatchToProps),
-  firestoreConnect([{collection:'users'}])
-)
-(EditProfileImage);
+  (
+    connect(mapStateToProps,mapDispatchToProps),
+    firestoreConnect([{collection:'users'}])
+  )
+  (EditProfileImage);

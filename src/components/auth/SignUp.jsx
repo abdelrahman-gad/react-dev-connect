@@ -4,7 +4,7 @@ import {connect } from 'react-redux';
 // import { firestoreConnect } from 'react-redux-firebase';
 import {signUp } from '../../store/actions/authActions';
 import { NavLink, Redirect } from 'react-router-dom';
-import { validate } from 'uuid';
+
 import { emailRegex } from '../../variables';
 class SignUp extends React.Component {
 

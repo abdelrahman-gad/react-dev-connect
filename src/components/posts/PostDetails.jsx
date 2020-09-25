@@ -1,5 +1,4 @@
 import React from 'react';
-import postReducer from '../../store/reducers/dataReducers/postReducer';
 import {connect} from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import {firestoreConnect} from 'react-redux-firebase';
@@ -71,10 +70,7 @@ class PostDetails extends React.Component{
                       
                     }
            
-              
              }
-     
-
 }
 
 const mapStateToProps =(state,ownProps)=>{
@@ -108,30 +104,24 @@ const mapStateToProps =(state,ownProps)=>{
             auth,
             post:newPost
         }
-        }else{
+        }else if (auth) {
             return {
                 auth
             };
-        } 
+        } else return {};
     
 }
 
-const mapDispatchToProps = (dispatch)=>{
-    return {
-      
-    };
-}
 
 
 export default compose(
-    connect(mapStateToProps,mapDispatchToProps),
+    connect(mapStateToProps,null),
     firestoreConnect([
         {collection:'profiles'},
         {collection:'users'},
         {collection:'posts'},
         {collection:'comments'},
-        {collection:'reacts'}
-    
+        {collection:'reacts'} 
     ])
   )
   (PostDetails);

@@ -1,4 +1,3 @@
-import { DriveEtaOutlined } from '@material-ui/icons';
 import React from 'react';
 import {connect} from 'react-redux';
 import {firestoreConnect} from 'react-redux-firebase';
@@ -108,7 +107,7 @@ class Educations extends React.Component{
                                     <td>
                                         <button 
                                             className="btn btn-danger" 
-                                            onClick={(e)=>this.handleDelete(e , userEducation.id)} 
+                                            onClick={(e)=>this.handleDelete( e , userEducation.id)} 
                                             >
                                            delete
                                         </button>
@@ -137,24 +136,21 @@ const  mapStateToProps = (state)=>{
     //   //console.log(userId);
     // //    let  profiles = state.firestore.data;
     let educations = state.firestore.ordered.educations;
-     if(educations!==undefined){
-         educations=educations.filter(education=>education.userId === userId);
+    const profile = state.firebase.profile;
+    const auth=state.firebase.auth;
+     if(educations){
+         educations = educations.filter(education=>education.userId === userId);
          return{
-            auth:state.firebase.auth,
-            profile:state.firebase.profile,
-            educations:educations
+            auth,
+            profile,
+            educations
        }
  
-    }
-     //  filter(education=>education.userId===userId);
-    else{
-        return{};
-    }
+    }else return{};
+    
       
- 
-
 }
-const mapDispatchToProps=(dispatch, ownProps )=>{
+const mapDispatchToProps=( dispatch )=>{
      
     return {
         deleteEducation:(educationId)=>dispatch(deleteEducation(educationId))
@@ -164,11 +160,9 @@ const mapDispatchToProps=(dispatch, ownProps )=>{
 
 
 export default 
-compose(
-    connect(mapStateToProps,mapDispatchToProps),
-    firestoreConnect([
-         {
-            collection:'educations',         
-         }
-        ]))
-(Educations);
+        compose(
+            connect(mapStateToProps,mapDispatchToProps),
+            firestoreConnect([
+                {collection:'educations'}])
+                )
+        (Educations);

@@ -1,8 +1,8 @@
 import React from 'react';
-
-
 import {connect} from 'react-redux';
 import {addPost} from '../../store/actions/postsActions';
+
+
 class AddPost extends React.Component{
    
     state={
@@ -46,9 +46,9 @@ class AddPost extends React.Component{
     }
 }
 const mapStateToProps = (state)=>{
-
+ const auth = state.firebase.auth;
     return{
-        auth:state.firebase.auth
+        auth
     }
 }
 const mapDispatchToProps = (dispatch)=>{

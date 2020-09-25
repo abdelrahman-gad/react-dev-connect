@@ -1,20 +1,27 @@
 
- const  initState = {
+import {  
+  ADD_REACT_SUCCESS,
+  ADD_REACT_ERROR , 
+  DELETE_REACT_SUCCESS ,
+  DELETE_REACT_ERROR
+} from './../../actions/actions';
+
+const  initState = {
     addReactError:null,
     deleteReactError:null
 }
-const commentReducer = (state=initState,action) => {
+const reactReducer = (state=initState,action) => {
     switch(action.type){
-        case "ADD_REACT_SUCCESS":
+        case ADD_REACT_SUCCESS:
           return  state;
-        case "ADD_REACT_ERROR":
+        case ADD_REACT_ERROR:
           return {
             ...state,
              addReactError:action.payload
           }; 
-        case "DELETE_REACT_SUCCESS":
+        case DELETE_REACT_SUCCESS:
             return state;
-        case "DELETE_REACT_ERROR":
+        case DELETE_REACT_ERROR:
             return {
                 ...state,
                 deleteReactError:action.payload
@@ -28,4 +35,4 @@ const commentReducer = (state=initState,action) => {
 
 
 
-export default commentReducer;
+export default reactReducer;

@@ -275,17 +275,17 @@ class EditProfile extends React.Component{
   //console.log(profiles);
   const profile = profiles ? profiles[userId]: null;
   //console.log(profile);
-  if( profile !== null ){
+  const auth =  state.firebase.auth;
+  if( !profile  ){
     return {
-      auth:state.firebase.auth,
-      profile:profile
+      auth,
+      profile
     }
-  }else{
+  }else if(auth) {
     return{
-      
+      auth
     }
-
-  }
+  }else return  {  };
   
     
 }

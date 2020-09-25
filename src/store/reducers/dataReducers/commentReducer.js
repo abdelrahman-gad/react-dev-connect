@@ -1,26 +1,32 @@
 
+import {
+  ADD_COMMENT_SUCCESS ,
+  ADD_COMMENT_ERROR,
+  DELETE_COMMENT_SUCCESS , 
+  DELETE_COMMENT_ERROR 
+}  from './../../actions/actions';
+
+
  const  initState = {
     addCommentError:null,
     deleteCommentError:null
 }
 const commentReducer = (state=initState,action) => {
     switch(action.type){
-        case "ADD_COMMENT_SUCCESS":
+        case ADD_COMMENT_SUCCESS:
           return  state;
-        case "ADD_COMMENT_ERROR":
+        case ADD_COMMENT_ERROR:
           return {
             ...state,
              addCommentError:action.payload
           }; 
-          case "DELETE_COMMENT_SUCCESS":
+          case DELETE_COMMENT_SUCCESS:
             return  state;
-          case "DELETE_COMMENT_ERROR":
+          case DELETE_COMMENT_ERROR:
             return {
               ...state,
                deleteCommentError:action.payload
             }; 
-  
-
         default:
           return state;  
       }

@@ -26,7 +26,7 @@ class PostSummary extends React.Component{
     
           //console.log(post);
           
-         if( !( post && auth  )  ){
+         if( ! ( post && auth  )  ){
            return null;
          }else{
            //console.log(post);
@@ -99,11 +99,11 @@ class PostSummary extends React.Component{
     }
 }
      
-const mapDispatchToProps  = (dispatch , ownProps ) =>{
+const mapDispatchToProps  = (dispatch ) =>{
   return {
     deletePost:  (postId)=> dispatch(deletePost(postId)) 
   }
 }
 
 
-export default   connect (null, mapDispatchToProps) (PostSummary);
+export default   connect ( null, mapDispatchToProps) (PostSummary);
