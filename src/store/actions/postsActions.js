@@ -21,7 +21,6 @@ export const addPost = (post)=>{
             postId:postId,
             commentCount:0,
             likeCount:0,
-            commentCount:0,
             userHandle:profile.handle,
             userId:authorId,
             createdAt: new Date()

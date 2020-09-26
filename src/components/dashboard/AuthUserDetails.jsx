@@ -51,16 +51,11 @@ class AuthUserDetails extends React.Component{
     render(){
         //console.log('from Auth user Details');
         //console.log(this.props);
-        const { auth } = this.props;
+   
         // console.log(auth.uid);
         return  (
             <div>
-
-
-
-
-
-                     <Experiences />
+                    <Experiences />
                    {/* educations Component */}
                      <Educations/>
 

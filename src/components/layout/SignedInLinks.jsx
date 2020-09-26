@@ -62,12 +62,14 @@ class  SigndInLinks extends Component  {
         <li  className="notifs">
              
             <a  
+              href="#" 
               onClick={(e)=>this.handleShowNotifs(e)}
               id="notifs">
             <i className="fas fa-globe"></i>
             <span className="hide-sm">Notifications</span>
             <span className="notifs-number">  {unreadNotificationsCount}  </span>
           </a>
+          
           <div
           
               className={this.state.showNotifs?"notifs-block show":"notifs-block"}

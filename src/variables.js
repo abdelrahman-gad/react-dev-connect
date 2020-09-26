@@ -1,7 +1,3 @@
-// admin credentialz
-const adminId='y1zTOWm2KUgXa0UVA09qnkgXkdR2';
- const adminEmail='admin@admin.com';
- const adminPassword='admin123';
 
 // some form input regular expressions
  const emailRegex = RegExp(

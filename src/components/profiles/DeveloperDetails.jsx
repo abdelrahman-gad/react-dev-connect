@@ -51,6 +51,7 @@ class DeveloperDetails extends React.Component{
                         <img
                           className="round-img my-2"
                           src={developer.imageUrl}
+                          alt="user "
                         />
                         <h1 className="large"> {developer.handle} </h1>
                         <p className="lead"> {developer.jobTitle} </p>
@@ -62,23 +63,25 @@ class DeveloperDetails extends React.Component{
                          socialLinks
                            ?                  
                             <span> 
-                                <a  onClick={(e)=>this.handleUrl(e,developer.website)}>
+                                <a 
+                                href="#"
+                                onClick={(e)=>this.handleUrl(e,developer.website)}>
                                 <i className="fas fa-globe fa-2x"></i>
                               </a>
-                              <a onClick={(e)=>this.handleUrl(e,socialLinks.twitter)}>
+                              <a   href="#" onClick={(e)=>this.handleUrl(e,socialLinks.twitter)}>
                                 <i className="fab fa-twitter fa-2x"></i>
                               </a>
-                              <a onClick={(e)=>this.handleUrl(e,developer.githubUsername)}>
+                              <a  href="#" onClick={(e)=>this.handleUrl(e,developer.githubUsername)}>
                                 <i className="fab fa-github fa-2x"></i>
                               </a>
                             
-                              <a onClick={(e)=>this.handleUrl(e,socialLinks.facebook)} >
+                              <a   href="#" onClick={(e)=>this.handleUrl(e,socialLinks.facebook)} >
                                 <i className="fab fa-facebook fa-2x"></i>
                               </a>
-                              <a  onClick={(e)=>this.handleUrl(e,socialLinks.linkedin)}>
+                              <a  href="#"  onClick={(e)=>this.handleUrl(e,socialLinks.linkedin)}>
                                 <i className="fab fa-linkedin fa-2x"></i>
                               </a>
-                              <a  onClick={(e)=>this.handleUrl(e,socialLinks.instagram)}>
+                              <a  href="#"  onClick={(e)=>this.handleUrl(e,socialLinks.instagram)}>
                                 <i className="fab fa-instagram fa-2x"></i>
                               </a>
                               <NavLink exact to={"/developerPosts/"+developer.userId} > <i className="fas fa-comment-alt fa-2x"></i> </NavLink>                             

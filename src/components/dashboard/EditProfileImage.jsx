@@ -120,7 +120,7 @@ class EditProfileImage extends React.Component{
                        /><br/>
                       <progress  value={this.state.uploadProgress}  max="100" /> <br/>
                         {
-                           this.state.profileImageUrl? <img  className="rounded" src={this.state.profileImageUrl} alt="user image"/>:<img  className="profile-img" src={process.env.PUBLIC_URL+'/default-user-img.jpeg'} />
+                           this.state.profileImageUrl? <img  className="rounded" src={this.state.profileImageUrl} alt="user"/>:<img  className="profile-img" src={process.env.PUBLIC_URL+'/default-user-img.jpeg'} alt="user default" />
                         }
                      {this.state.noSelectedImgError &&  <div className="alert alert-danger">  {this.state.noSelectedImgError} </div> }
                     <button onClick={this.handleUpload} className="btn btn-success"> submit profile image </button>

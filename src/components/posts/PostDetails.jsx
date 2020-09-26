@@ -75,11 +75,11 @@ class PostDetails extends React.Component{
 
 const mapStateToProps =(state,ownProps)=>{
     let auth = state.firebase.auth;
-   let  postId=ownProps.match.params.id;
-   let  posts =state.firestore.data.posts;
-   let  users = state.firestore.data.users;
-   let comments= state.firestore.ordered.comments;
-   let reacts=state.firestore.ordered.reacts;
+    let  postId=ownProps.match.params.id;
+    let  posts =state.firestore.data.posts;
+    let  users = state.firestore.data.users;
+    let comments= state.firestore.ordered.comments;
+    let reacts=state.firestore.ordered.reacts;
 
   
 

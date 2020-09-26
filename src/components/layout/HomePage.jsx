@@ -18,7 +18,7 @@ class HomePage extends React.Component {
            }else{
             return(
                 <section className="landing">                       
-                 <img  className="landing-img" src={process.env.PUBLIC_URL+'/imgs/showcase.jpg'} alt="landing page image"/>                  
+                 <img  className="landing-img" src={process.env.PUBLIC_URL+'/imgs/showcase.jpg'} alt="landing page "/>                  
                  <div className="dark-overlay">
                     <div className="landing-inner">
                     <h1 className="x-large">Deve10pers </h1>
