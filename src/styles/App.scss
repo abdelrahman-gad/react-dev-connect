@@ -51,10 +51,14 @@ img {
 
 /* notififications  */
 .notifs{
-  padding: 0.45rem;
-  margin: 0 0.45rem;
+   background-color: $dark-color;
+   border: none;
+   color: $primary-color ;
+   font-size: 16px;
+  
   &:hover {
     color: $primary-color;
+    
   } 
   position: relative; 
   cursor: pointer;

@@ -65,7 +65,7 @@ class  SigndInLinks extends Component  {
               
               onClick={(e)=>this.handleShowNotifs(e)}
               id="notifs"
-              
+              className="notifs"
               >
             <i className="fas fa-globe"></i>
             <span className="hide-sm">Notifications</span>
