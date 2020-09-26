@@ -64,8 +64,8 @@ class DeveloperDetails extends React.Component{
                            ?                  
                             <span> 
                                 <a 
-                                href="#"
-                                onClick={(e)=>this.handleUrl(e,developer.website)}>
+                                  href="#"
+                                  onClick={(e)=>this.handleUrl(e,developer.website)}>
                                 <i className="fas fa-globe fa-2x"></i>
                               </a>
                               <a   href="#" onClick={(e)=>this.handleUrl(e,socialLinks.twitter)}>

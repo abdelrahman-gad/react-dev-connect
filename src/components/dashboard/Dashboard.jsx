@@ -27,7 +27,7 @@ class Dashboard  extends React.Component {
                        <div>
                         
                       {
-                       profile.imageUrl!== undefined ? <img  className="profile-img" src={profile.imageUrl} alt="user image"/>:<img  className="profile-img" src={process.env.PUBLIC_URL+'/imgs/default-user-img.jpeg'} />
+                       profile.imageUrl!== undefined ? <img  className="profile-img" src={profile.imageUrl} alt="user "/>:<img  className="profile-img" src={process.env.PUBLIC_URL+'/imgs/default-user-img.jpeg'}  alt="user" />
                       }
                        
                      

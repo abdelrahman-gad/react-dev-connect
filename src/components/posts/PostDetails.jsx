@@ -11,7 +11,7 @@ import {showReadableDateTime} from '../../utils/utilsFuncs';
 class PostDetails extends React.Component{
 
     render(){
-                    let {auth,post} =this.props;                   
+                    let { auth , post } =this.props;                   
                     if(!auth.uid){
                        return (<Redirect exact to="/" /> );
                     }else{
@@ -58,7 +58,7 @@ class PostDetails extends React.Component{
                                   
                                   <div className="post-reacts">
                                    <ReactsBar  reacts={reacts}  reactableId={postId} reactedId={user.userId} reactorId={auth.uid}  />
-                                      <a className="btn">
+                                      <a  href="#" className="btn">
                                           <i className="fas fa-comments"></i>  <span> {comments.length} </span>
                                       </a>  
                                   </div>
