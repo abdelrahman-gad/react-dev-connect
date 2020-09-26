@@ -61,14 +61,16 @@ class  SigndInLinks extends Component  {
         </li>
         <li  className="notifs">
              
-            <a  
-              href="#" 
+            <button 
+              
               onClick={(e)=>this.handleShowNotifs(e)}
-              id="notifs">
+              id="notifs"
+              
+              >
             <i className="fas fa-globe"></i>
             <span className="hide-sm">Notifications</span>
             <span className="notifs-number">  {unreadNotificationsCount}  </span>
-          </a>
+          </button>
           
           <div
           

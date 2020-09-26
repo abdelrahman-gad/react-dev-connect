@@ -37,17 +37,25 @@ img {
   ul {
     display: flex;
   }
-  a {
+  a  {
     padding: 0.45rem;
     margin: 0 0.45rem;
     &:hover {
       color: $primary-color;
-    }
+    }  
   }
 
+  button{
+    
+  }
 
 /* notififications  */
 .notifs{
+  padding: 0.45rem;
+  margin: 0 0.45rem;
+  &:hover {
+    color: $primary-color;
+  } 
   position: relative; 
   cursor: pointer;
     .fa-globe{
@@ -153,7 +161,7 @@ img {
     img {
       width: 250px;
     }
-    .icons a {
+    .icons i{
       color: #fff;
       margin: 0 0.3rem;
       &:hover {

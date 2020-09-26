@@ -58,9 +58,9 @@ class PostDetails extends React.Component{
                                   
                                   <div className="post-reacts">
                                    <ReactsBar  reacts={reacts}  reactableId={postId} reactedId={user.userId} reactorId={auth.uid}  />
-                                      <a  href="#" className="btn">
+                                      <button  className="btn">
                                           <i className="fas fa-comments"></i>  <span> {comments.length} </span>
-                                      </a>  
+                                      </button>  
                                   </div>
                                   <Comments postId={postId} comments={comments} auth={auth} />
                              </section> 
