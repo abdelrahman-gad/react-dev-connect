@@ -47,7 +47,7 @@ class AddPost extends React.Component{
 }
 const mapStateToProps = (state)=>{
  const auth = state.firebase.auth;
-    return{
+    return {
         auth
     }
 }

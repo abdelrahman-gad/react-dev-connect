@@ -12,16 +12,14 @@ import {
 
 
 export const signIn = (credentials) => {
-    return (dispatch,getState,{getFirebase,getFirestore})=> {
+    return (dispatch , getState , {getFirebase,getFirestore})=> {
       const firebase = getFirebase();
     
-      firebase.auth().signInWithEmailAndPassword(credentials.email,credentials.password)
+     firebase.auth().signInWithEmailAndPassword(credentials.email,credentials.password)
       .then( () => dispatch({type:SIGNIN_SUCCESS}))
-      .catch(err => {         
-            dispatch({type:SIGNIN_ERROR,payload:err.message})
+      .catch( err => {         
+            dispatch({type:SIGNIN_ERROR,payload:err.message});
         });
-   
-            
     }
 }
 
@@ -41,8 +39,8 @@ export const signUp = (newUser) =>{
     return (dispatch,getState,{getFirebase,getFirestore})=>{
         const firebase = getFirebase();
         const firestore = getFirestore();
-        console.log(newUser);
-         firebase.auth().createUserWithEmailAndPassword(
+         console.log( 'from actions ' , newUser);
+     firebase.auth().createUserWithEmailAndPassword( 
              newUser.email,
              newUser.password
          ).then( resp => {
@@ -52,7 +50,7 @@ export const signUp = (newUser) =>{
             return firestore.collection('users')
             .doc(resp.user.uid)
             .set({
-                handle:newUser.handle,
+                handle:newUser.name,
                 imageUrl:'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200',
                 email:newUser.email,
                 createdAt:new Date(),
@@ -65,7 +63,6 @@ export const signUp = (newUser) =>{
                 dispatch({type:SIGNUP_ERROR,payload:err.message});
            });
              
-
     }
 }
 

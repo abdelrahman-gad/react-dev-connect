@@ -52,7 +52,7 @@ class AuthUserDetails extends React.Component{
         //console.log('from Auth user Details');
         //console.log(this.props);
    
-        // console.log(auth.uid);
+         console.log(this.props.auth.uid);
         return  (
             <div>
                     <Experiences />
@@ -91,7 +91,7 @@ class AuthUserDetails extends React.Component{
 }
 
 const mapStateToProps = (state) =>{
-    const auth=state.firebase.auth;
+    const auth = state.firebase.auth;
     const profile = state.firebase.profile;
     return {
        auth,

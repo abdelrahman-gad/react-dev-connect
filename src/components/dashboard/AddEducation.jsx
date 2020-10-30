@@ -61,6 +61,7 @@ class AddEducation extends React.Component{
     render(){
      //   console.log('add education component');
         const { auth  } = this.props;
+        console.log(auth);
         if(!auth.uid){
           return (<Redirect exact to="/" />);
         } else{
@@ -70,7 +71,7 @@ class AddEducation extends React.Component{
                  Add Education
                 </h1>
                 <p className="lead">
-                <i className="fas fa-user"></i> Let's fill up expereince
+                  <i className="fas fa-user"></i> Let's fill up expereince
                 </p>
                 <small> * = required fields</small>
 
@@ -146,8 +147,8 @@ class AddEducation extends React.Component{
                         
                     </div>
                    
-                    <input type="submit" className="btn btn-primary my-1" />
-                    <NavLink className="btn btn-light my-1" to="/dashboard">Go Back</NavLink>
+                    <input type="submit" className="btn btn-primary" />
+                    <NavLink className="btn btn-light" to="/dashboard">Go Back</NavLink>
                 </form>
             </section>   
           );
@@ -166,8 +167,7 @@ const mapStateToProps = (state,ownProps) =>{
           auth:state.firebase.auth       
         };
       }else return {};
-     
-    
+       
 }
 const mapDispatchToProps = (dispatch)=>{
 

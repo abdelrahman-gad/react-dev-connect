@@ -1,174 +1,79 @@
-import React from 'react';
+import React , {useState} from 'react';
 import {connect } from 'react-redux';
 // import {compose} from 'redux';
 // import { firestoreConnect } from 'react-redux-firebase';
 import {signUp } from '../../store/actions/authActions';
 import { NavLink, Redirect } from 'react-router-dom';
-
-import { emailRegex } from '../../variables';
-class SignUp extends React.Component {
-
-   state = {
-     handle:'',
-     email:'',
-     password:'',
-     confirmPassword:'',
-     errors:{
-       password:'',
-       email:'',
-       name:''
-     }
-   }
-    handleChange =(e)=>{
-      this.setState({
-        [e.target.id]:e.target.value
-      });
-
-    }
-    handleSubmit= (e) =>{
-      e.preventDefault();
-      const {handle,email,password,confirmPassword} = this.state;
-    
-       if(!this.valid(handle ,email,password,confirmPassword)){
-         
-       }
-
-       else{
-        const {handle,email,password} = this.state;
-        const newUser = {handle,email,password} ;
-        const {signUp} = this.props;
-        signUp(newUser);
-        this.props.history.push("/dashboard");
-       }      
-    }
+import Jumbotron from '../recources/UI/Jumbotron';
+import { Formik, Field , Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 
-     valid(handle,email, password,confirmPassword){
-         if(handle.length<3){
-            this.setState({
-              errors:{
-                password:'',
-                email:'',
-                handle:'Name Shoud be 3 Characters at least'
-              }
-            });
-            return false;
-         }
-         if(!emailRegex.test(email)){
-          this.setState({
-            errors:{
-              password:'',
-              handle:'',
-              email:'email format not valid'
-            }
-          });
-          return false;
-         }
-         if(password!==confirmPassword){
-          this.setState({
-            errors:{
-              handle:'',
-              email:'',
-              password:'password must be equel to confirm password'
-            }
-          });
+const  SignUp  = ( props ) => {
 
-          return false;
-         }
+  const validate = () => Yup.object({
+    name:Yup.string()
+      .min(3 , 'name is too short should be 3 chars minimum. '),
+    email:Yup.string()
+     .email('Invalid Email Address')
+     .required('Please fill up email address field'),
+    password:Yup.string()
+     .required('Please provide a password') 
+     .min(6, 'Password is too short - should be 6 chars minimum.'),
+    passwordConfirmation:Yup.string()
+     .oneOf([Yup.ref('password'), null], 'Passwords must match')     
+ });
 
-         if(password.length<6){
-          this.setState({
-            errors:{
-              handle:'',
-              email:'',
-              password:'password length should be 6 characters at least'
-            }
-          });
-          return false;
-         }
-         return true;
-     }
+   const signupForm = () =>  (
+    <Formik
+      //1- initial values
+      initialValues={{ name:'' ,  email:'' , password:'' , passwordConfirmation:'' }}
+      //2- validation [ I used Yup package ]
+      validationSchema={validate()}
+      //3-  add Submit handler method
+      onSubmit={ ( values ) => {
+           const { name , email , password } = values;
+           const user = {name , email , password}
+           console.log(user);
+           props.signUp(user);
+          //  props.history.push('/dashboard');
+         // console.log(props.auth);
+       }}
+      >
+     <Form className="form">   
+        <Field className="form-control"  name="name" type="text" placeholder="name" />
+        <p  className="text-danger"> <ErrorMessage name="name"  /></p> 
+        <br/> 
+        <Field className="form-control"  name="email" type="email"  placeholder="email" />
+        <p  className="text-danger"> <ErrorMessage name="email"  /></p> 
+        <br/> 
+        <Field  className="form-control"  name="password" type="password"  placeholder="password" id="password" />
+        <p className="text-danger"> <ErrorMessage name="password"   /> </p>
+        <br/>
+        <Field  className="form-control"  name="passwordConfirmation" type="password" placeholder="confirm password" />
+        <p className="text-danger"> <ErrorMessage name="passwordConfirmation"  /> </p>
+        <br/>
+        <button type="submit" className="btn btn-primary" >Submit</button>          
+     </Form>
+    </Formik>
+   );
 
-   
-
- render(){
-   //console.log(this.props);
-   const {errors} =this.state;
-   const {auth} = this.props;
+  
+const signinLink = ( ) => (<p className="my-1"> Already have an account ? <NavLink to="/signin"> sign in </NavLink></p>);
+ 
+   const { auth } = props;
+   console.log(auth);
    if(auth.uid){
      return <Redirect exact to="/dashboard" />
-   }else {
-
+   } else {
     return (
-      <section className="container" >
-    
-      <div className="content">
-       
-        <h1 className="large text-primary">Sign up</h1>
-        
-        <p className="lead"><i className="fas fa-user"></i> Create New Account</p>
-        <form action="dashboard.html" className="form" onSubmit={this.handleSubmit} >
-
-
-          <div className="form-group">
-            <input
-             type="text"   
-             placeholder="Enter name"   
-             id="handle"
-             onChange={this.handleChange}
-             />
-             <p className="text-danger"> {errors.handle} </p>
-          </div>
-          
-          <div className="form-group">
-            <input
-               type="email"
-               placeholder="Email Address" 
-               id="email" 
-               minLength="6"
-               onChange={this.handleChange}
-                />
-             <p className="text-danger"> {errors.email} </p>
-
-          </div>
-  
-          <div className="form-group">
-            <input 
-            type="password" 
-            placeholder="password"  
-            id="password" 
-            onChange={this.handleChange}
-            />
-             <p className="text-danger"> {errors.password} </p>
-
-          </div>
-  
-          <div className="form-group">
-            <input
-               type="password"
-               placeholder="confirm password" 
-               id="confirmPassword" 
-               onChange={this.handleChange}
-               />
-              <p className="text-danger"> {errors.password} </p>
-
-          </div>
-          <div className="form-group">
-            <button  className="btn btn-primary" value="Register" >   Sign up   </button>
-          </div>
-        </form>
-        <p className="my-1">
-          Already have an account ? <NavLink to="/signin"> sign in </NavLink>
-        </p>
-      </div>
-  
-    </section>
-  );
+      <section className="container" >    
+        <Jumbotron title="Sign Up" description="Create New  Account" >  <i className="fas fa-user"></i>  </Jumbotron>
+        {signupForm()}
+        {signinLink()}
+      </section>
+    );
    }
-
- }
-    
-
   
 }
 
@@ -177,15 +82,14 @@ class SignUp extends React.Component {
 const mapStateToProps = (state) => {
   const auth = state.firebase.auth;
     return {
-        authError:null,
-        auth:auth
+        authError:state.auth.error,
+        auth
     }
 }
-const mapDispatchToProps = (dispatch ) => {
+const mapDispatchToProps = ( dispatch ) => {
     return {
         signUp:(newUser)=> dispatch(signUp(newUser))
     }
 }
 
-export default  
-connect( mapStateToProps , mapDispatchToProps ) (SignUp);
+export default connect( mapStateToProps , mapDispatchToProps ) (SignUp);
