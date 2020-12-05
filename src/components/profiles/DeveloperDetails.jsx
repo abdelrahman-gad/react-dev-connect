@@ -34,7 +34,7 @@ const  DeveloperDetailsNew =  ( { developer  }) => {
                         />
                         <h1 className="large mt-2"> {developer.handle} </h1>
                         <p className="lead"> {developer.jobTitle} </p>
-                        <p> Joined At  {formatDate(developer.createdAt.toDate())}  </p>
+                        <p> Joined At  {developer.createdAt && formatDate(developer.createdAt.toDate())}  </p>
                         <p> {developer.location} </p>
                         <div className="icons my-1">
                           

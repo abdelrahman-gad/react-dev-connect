@@ -16,7 +16,7 @@ import {
         from './actions';
 
 export const editProfileImage = ( profileImageUrl ) => {
-    return (dispatch,getState,{getFirebase,getFirestore})=>{
+    return (dispatch,getState,{ getFirebase , getFirestore})=>{
         console.log('editprofile image from actions');
         const firestore = getFirestore();
         const authorId = getState().firebase.auth.uid;
