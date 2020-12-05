@@ -30,26 +30,17 @@ export const editProfileImage = ( profileImageUrl ) => {
     }
 }
 
-export const editProfile = (editableProfile) => {
+export const editProfile = (newProfile) => {
     return (dispatch,getState,{ getFirebase , getFirestore})=>{
             console.log('edit profile from actions');
             const firestore = getFirestore();
             const profile = getState().firebase.profile;
-            console.log(profile);
-            console.log(editableProfile);
-          
-            
+            console.log(newProfile);
+                    
             const authorId  = getState().firebase.auth.uid;
             console.log(authorId);
             firestore.collection('profiles').doc(authorId).set({
-                location:editableProfile.location,
-                jobTitle:editableProfile.jobTitle,
-                company:editableProfile.company,
-                bio:editableProfile.bio,
-                githubUsername:editableProfile.githubUsername,
-                website:editableProfile.website,
-                skills:editableProfile.skills,
-                socialLinks:editableProfile.socialLinks,
+                ...newProfile,
                 userHandle:profile.handle,      
                 userId:authorId
             }).then(()=>{

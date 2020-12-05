@@ -1,269 +1,289 @@
-import React from 'react';
+import React , {useState , useEffect} from 'react';
 import { firestoreConnect } from 'react-redux-firebase';
 import {Redirect, NavLink} from 'react-router-dom';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {editProfile } from '../../store/actions/profilesActions';
+import FormikControl from '../../components/recources/formikComponents/FormikControl';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import Jumbotron  from '../recources/UI/Jumbotron';
+import { toast } from 'react-toastify';
+
+// test if data available 
+// in useEffect if any data is available setInitial data based on it
 
 
-class EditProfile extends React.Component{
-
-    constructor(props){
-       super(props);
+const  EditProfile =  ( {editProfile  , profile } ) => {
+      
        
-       //console.log(props.profile);
-       const {profile} = props;
-       //console.log('from constructor');
-       this.state={
-        jobTitle:profile?profile.jobTitle:'',
-        company:profile?profile.company:'',
-        website:profile?profile.website:'',
-        location:profile?profile.location:'',
-        skills:profile?profile.skills.join(','):'',
-        githubUsername:profile?profile.githubUsername:'',
-        bio:profile?profile.bio:'',
-        // socialLinks
-        facebook:profile?profile.socialLinks.facebook:'',
-        youtube:profile?profile.socialLinks.youtube:'',
-        linkedin:profile?profile.socialLinks.linkedin:'',
-        twitter:profile?profile.socialLinks.twitter:'',
-        instagram:profile?profile.socialLinks.instagram:''
-       }
-       //binding methods
-       this.handleChange=this.handleChange.bind(this);
-       this.handleSubmit=this.handleSubmit.bind(this);
-    }
-   
-      componentWillReceiveProps(nextProps){
-      //console.log(nextProps.profile);
-      this.mapProfileDataToState(nextProps.profile);
-    }
-  
-    
 
-    mapProfileDataToState = (profile) => {
-    
-        this.setState({
-          jobTitle:profile?profile.jobTitle:'',
-          company:profile?profile.company:'',
-          website:profile?profile.website:'',
-          location:profile?profile.location:'',
-          skills:profile?profile.skills.join(','):'',
-          githubUsername:profile?profile.githubUsername:'',
-          bio:profile?profile.bio:'',
-          // socialLinks
-          facebook:profile?profile.socialLinks.facebook:'',
-          youtube:profile?profile.socialLinks.youtube:'',
-          linkedin:profile?profile.socialLinks.linkedin:'',
-          twitter:profile?profile.socialLinks.twitter:'',
-          instagram:profile?profile.socialLinks.instagram:''
-        });
-      
-      
-    }
+      useEffect(() => {
+        console.log(profile);
+        // when you reintialize the values some profile on firestore is not the same on initial values
+        // so you have to do some modificatoins when you fetch and also when you puhs to firebase firestore
+        // convert array of skills into string
+        //
+        if(profile){
+          setInitialValues({
+            ...profile   
+          });
+        }
 
-    handleChange(e){
-      e.preventDefault();
-    //  //console.log(e.target.id,e.target.value);
-      this.setState({
-        [e.target.id]:e.target.value
-        });
-      ////console.log(this.state);
-    }
+      }, [profile]);
+
+    let  [initialValues , setInitialValues] = useState({
+                                                        jobTitle:'',
+                                                        company:'',
+                                                        website:'',
+                                                        location:'',
+                                                        skills:'',
+                                                        githubUsername:'',
+                                                        bio:'',
+                                                        facebook:'',
+                                                        twitter:'',
+                                                        linkedin:'',
+                                                        youtube:'',
+                                                        instagram:''
+                                                        });
   
 
  
-  
-    handleSubmit(e){
+
+    const handleChange = e =>{
       e.preventDefault();
-      let {jobTitle,company,website,location,skills,bio,githubUsername,facebook,twitter,youtube,linkedin,instagram}=this.state;
-      let socialLinks= {facebook,twitter,youtube,linkedin,instagram};
-      let skillsArr = skills.split(',');
-      let editableProfile = {jobTitle,company,website,location,bio,githubUsername,socialLinks,skillsArr};
-      //  //console.log('from component',profile);
-      //console.log(editableProfile);
-      const {editProfile} = this.props;
-      editProfile(editableProfile);
-      this.props.history.push('/');
+      setInitialValues({
+           ...initialValues,
+           [e.target.id]:e.target.value
+        });
+      console.log(initialValues);  
     }
+  
+    const urlRegex =/((https?):\/\/)?(www.)?[a-z0-9-]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#-]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+    const validationSchema = Yup.object({
+      bio: Yup.string().min(5, 'Must be 5 characters or more').nullable(),
+      company: Yup.string().min(4, 'Must be 4 characters or more').nullable(),
+      skills: Yup.string().min(2, 'Must be 2 characters or more').nullable(),
+      website: Yup.string().matches( urlRegex , 'Enter correct url!').nullable(),
+      location:Yup.string().min(5,'location must be 5 chars at least').nullable(),
+      facebook: Yup.string().matches( urlRegex , 'Enter correct url!').nullable(),
+      twitter: Yup.string().matches( urlRegex , 'Enter correct url!').nullable(),
+      linkedin: Yup.string().matches( urlRegex , 'Enter correct url!').nullable(),
+      youtube: Yup.string().matches( urlRegex , 'Enter correct url!').nullable(),
+      instagram: Yup.string().matches( urlRegex , 'Enter correct url!').nullable(),
+      githubUsername: Yup.string().matches( urlRegex , 'Enter correct url!').nullable(),
+    });
     
-    render(){
-     const  { auth  } = this.props;
+    const onSubmit =(values, { setSubmitting }) => {
+        setTimeout(() => {    
+          
+          // console.log(values);
+          // console.log(initialValues);
+          editProfile(initialValues);
+          setSubmitting(false);
+          toast.success(`You have updated Profile  successfully` , {  
+            position:toast.POSITION.BOTTOM_RIGHT,
+            autoClose:8000
+          });
+        }, 400);
+      }
+
+ 
+
       
 
-       if(!auth.uid){
-         return (<Redirect exact to="/" />)
-       }else{
+     
         return (
           <section className="container">
-           <h1 className="large text-primary">
-             Create Your Profile
-           </h1>
-           <p className="lead">
-             <i className="fas fa-user"></i> Let's get some information to make your
-             profile stand out
-           </p>
+              <Jumbotron 
+                  title="Create Your Profile"
+                  description="Let's get some information to make your profile stand out"
+                  >
+                 <i className="fas fa-user"></i>
+              </Jumbotron>
+           
            <small> * = required fields</small>
-           <form className="form" onSubmit={this.handleSubmit}>
-             <div className="form-group">
-               <select
-                onChange={this.handleChange}
-                id="jobTitle"
-                name="status">
-                 <option value={this.state.jobTitle}>{this.state.jobTitle?this.state.jobTitle:"--please select option--"}</option>
-                 <option value="Developer">Developer</option>
-                 <option value="Junior Developer">Junior Developer</option>
-                 <option value="Senior Developer">Senior Developer</option>
-                 <option value="Manager">Manager</option>
-                 <option value="Student or Learning">Student or Learning</option>
-                 <option value="Instructor">Instructor or Teacher</option>
-                 <option value="Intern">Intern</option>
-                 <option value="Other">Other</option>
-               </select>
-               <small className="form-text"
-                 >Give us an idea of where you are at in your career</small>
-             </div>
-             <div className="form-group">
-               <input 
-                onChange={this.handleChange}
-                value={this.state.company}
-                type="text" 
-                id="company"
-                placeholder="Company"
-                name="company" />
-               <small className="form-text"
-                 >Could be your own company or one you work for</small>
-             </div>
-             <div className="form-group">
-               <input
-                  onChange={this.handleChange}               
-                  type="text"
-                  id="website"
-                  value={this.state.website}
-                  placeholder="Website" 
-                  name="website" />
-               <small className="form-text"
-                 >Could be your own or a company website</small>
-             </div>
-             <div className="form-group">
-               <input
-                onChange={this.handleChange}
-                type="text"
-                id="location"
-                value={this.state.location}
-                placeholder="Location"
-                name="location" />
-               <small className="form-text"
-                 >City & state suggested (eg. Boston, MA)</small>
-             </div>
-             <div className="form-group">
-               <input 
-                 onChange={this.handleChange}
-                 id="skills"
-                 value={this.state.skills}
-                 type="text"
-                 placeholder="* Skills"
-                 name="skills"
-               
-               />
-               <small className="form-text"
-                 >Please use comma separated values (eg.
-                 HTML,CSS,JavaScript,PHP)</small>
-             </div>
-             <div className="form-group">
-               <input
-                 onChange={this.handleChange}
-                 id="githubUsername"
-                 type="text"
-                 value={this.state.githubUsername}
-                 placeholder="Github Username"
-                 name="githubusername"
-               />
-               <small className="form-text"
-                 >If you want your latest repos and a Github link, include your
-                 username</small>
-             </div>
-             <div className="form-group">
-               <textarea
-                 onChange={this.handleChange}
-                 id="bio" 
-                 value={this.state.bio}
-                 placeholder="A short bio of yourself" 
-                 name="bio"></textarea>
-               <small className="form-text">Tell us a little about yourself</small>
-             </div>
-     
-             <div className="my-2">
-               <button type="button" className="btn btn-light" disabled>
-                 Add Social Network Links
-               </button>
-               <span>Optional</span>
-             </div>
-     
-             <div className="form-group social-input">
-               <i className="fab fa-twitter fa-2x"></i>
-               <input
-                 onChange={this.handleChange}
-                 id="twitter"
-                 value={this.state.twitter}
-                 type="text" 
-                 placeholder="Twitter URL" 
-                 name="twitter" />
-             </div>
-     
-             <div className="form-group social-input">
-               <i className="fab fa-facebook fa-2x"></i>
-               <input
-                 onChange={this.handleChange}
-                 id="facebook"
-                 value={this.state.facebook}
-                 type="text" 
-                 placeholder="Facebook URL" 
-                 name="facebook" />
-             </div>
-     
-             <div className="form-group social-input">
-               <i className="fab fa-youtube fa-2x"></i>
-               <input 
-                 onChange={this.handleChange}
-                 id="youtube"
-                 value={this.state.youtube}
-                 type="text"
-                 placeholder="YouTube URL" 
-                 name="youtube" />
-             </div>
-     
-             <div className="form-group social-input">
-               <i className="fab fa-linkedin fa-2x"></i>
-               <input 
-                 onChange={this.handleChange}
-                  id="linkedin"
-                  value={this.state.linkedin}
-                  type="text" 
-                  placeholder="Linkedin URL" 
-                  name="linkedin" />
-             </div>
-     
-             <div className="form-group social-input">
-               <i className="fab fa-instagram fa-2x"></i>
-               <input
-                 onChange={this.handleChange}
-                 id="instagram"
-                 value={this.state.instagram}
-                 type="text" 
-                 placeholder="Instagram URL"
-                 name="instagram" />
-             </div>
-             <input type="submit" className="btn btn-primary my-1" />
-             <NavLink className="btn btn-light my-1" to="/dashboard">Go Back</NavLink>
-           </form>
+           <Formik
+             validationSchema={validationSchema}
+             initialValues={initialValues}
+             onSubmit={onSubmit}
+             enableReinitialize
+           
+           > 
+             
+             {formik => 
+                {
+                  const {
+                    jobTitle,
+                    company,
+                    website,
+                    location,
+                    skills,
+                    githubUsername,
+                    bio,
+                    facebook,
+                    twitter,
+                    linkedin,
+                    youtube,
+                    instagram
+                    } = initialValues;
+                  return (
+                  <Form className="form">
+
+                     <div className="form-group">          
+                        <FormikControl
+                              control='input'
+                              name='jobTitle'
+                              value={jobTitle}       
+                              className="form-control"
+                              onChange={(e)=>handleChange(e)}
+                          />
+                        <small className="form-text">Job title </small>
+                      </div>
+                      <div className="form-group">          
+                        <FormikControl
+                              control='input'
+                              name='company'
+                              value={company}       
+                              className="form-control"
+                              onChange={(e)=>handleChange(e)}
+                          />
+                        <small className="form-text">latest company you are working for </small>
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='input'
+                              className="form-control"
+                              name='website'
+                              value={website}
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">Provide your website/porfolio link</small>
+
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='input'
+                              className="form-control"
+                              name='location'
+                              value={location}         
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">location or area of the latest company you worked for</small>
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='textarea'
+                              className="form-control"
+                              name='skills'
+                              value={skills}   
+                              cols='70'      
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">Provide your skills <bold>Seperated with comma "," </bold>  .Plz </small>
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='textarea'
+                              className="form-control"
+                              name='bio'
+                              value={bio}   
+                              cols='70'      
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">Provide small biography about yourself</small>
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='input'
+                              className="form-control"
+                              name='githubUsername'
+                              value={githubUsername}         
+                              onChange={(e)=>handleChange(e)}
+                          />
+                           <small className="form-text">
+                             <i className="fab fa-github mr-3"></i> 
+                               your github link
+                          </small>
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='input'
+                              className="form-control"
+                              name='facebook'
+                              value={facebook}         
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">
+                             <i className="fab fa-facebook mr-3"></i> 
+                             your facebook account link
+                          </small>
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='input'
+                              className="form-control"
+                              name='youtube'
+                              value={youtube}         
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">
+                             <i className="fab fa-youtube mr-3"></i> 
+                             your youtube account link
+                          </small>
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='input'
+                              className="form-control"
+                              name='twitter'
+                              value={twitter}         
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">
+                             <i className="fab fa-twitter mr-3"></i> 
+                             your twitter account  link
+                          </small>
+                      </div>
+                      <div className="form-group">
+                          <FormikControl
+                              control='input'
+                              className="form-control"
+                              name='linkedin'
+                              value={linkedin}         
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">
+                             <i className="fab fa-linkedin mr-3"></i> 
+                             your linkedin account link
+                          </small>
+                      </div>
+                    
+                      <div className="form-group">
+                          <FormikControl
+                              control='input'
+                              className="form-control"
+                              name='instagram'
+                              value={instagram}         
+                              onChange={(e)=>handleChange(e)}
+                          />
+                          <small className="form-text">
+                             <i className="fab fa-instagram mr-3"></i> 
+                             your instagram account link
+                          </small>
+                      </div>
+                      <input type="submit"  className="btn btn-primary" value="update profile information"  />
+                  </Form>
+                )}
+              }
+
+           </Formik> 
+          
          </section>
          
         );
-       }
+       
       
-    
-     }
   }
 
  const mapStateToProps = (state,ownProps) =>{
@@ -276,22 +296,16 @@ class EditProfile extends React.Component{
   const profile = profiles ? profiles[userId]: null;
   //console.log(profile);
   const auth =  state.firebase.auth;
-  if( !profile  ){
+  
     return {
       auth,
       profile
     }
-  }else if(auth) {
-    return{
-      auth
-    }
-  }else return  {  };
   
-    
 }
 const mapDispatchToProps = (dispatch)=>{
     return {
-        editProfile:(editableProfile)=>dispatch(editProfile(editableProfile))
+        editProfile:(newProfile)=>dispatch(editProfile(newProfile))
     }
 }
 

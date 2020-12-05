@@ -12,7 +12,6 @@ import Dashboard from './components/dashboard/Dashboard';
 import PostDetails from './components/posts/PostDetails';
 import Posts from './components/posts/Posts';
 import EditProfile from './components/dashboard/EditProfile';
-import EditProfileFormik from './components/dashboard/EditProfileFormik';
 
 import AddExperience from './components/dashboard/AddExperience';
 import AddEducation from './components/dashboard/AddEducation';
@@ -21,12 +20,9 @@ import NotFoundPage from './components/layout/NotFoundPage';
 import HomePage from './components/layout/HomePage';
 import Developers from './components/profiles/Developers';
 import DeveloperDetails from './components/profiles/DeveloperDetails';
-import DeveloperDetailsNew from './components/profiles/DeveloperDetailsNew';
 
 import DeveloperPosts from './components/profiles/DeveloperPosts';
 import EditPost from './components/posts/EditPost';
-import EditPostFormik from './components/posts/EditPostFormik';
-
 import PrivateRoute from './components/auth/PrivateRoute';
 import {toast} from 'react-toastify';
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
@@ -44,21 +40,21 @@ function App() {
          <Switch>
             <Route exact path='/' component={HomePage}  />
 
-            <Route exact path='/dashboard' component={Dashboard}  />
+            <PrivateRoute exact path='/dashboard' component={Dashboard}  />
             <Route exact path='/signin' component={SignIn} />
             <Route exact path='/signup' component={SignUp} />
-            <Route exact path="/editProfile/:id"  component={EditProfileFormik}  /> 
-            <Route exact path="/addExperience/:id"  component={AddExperience} />
-            <Route exact path="/addEducation/:id"  component={AddEducation} />
-            <Route exact path="/editProfileImage/:id" component={EditProfileImage}  />
-            <Route exact path="/developers"  component={Developers}/>
-            <Route exact path="/profile/:id"  component={DeveloperDetailsNew}/> 
-            <Route exaxt path="/developerPosts/:id" component={DeveloperPosts} />
+            <PrivateRoute exact path="/editProfile/:id"  component={EditProfile}  /> 
+            <PrivateRoute exact path="/addExperience/:id"  component={AddExperience} />
+            <PrivateRoute exact path="/addEducation/:id"  component={AddEducation} />
+            <PrivateRoute exact path="/editProfileImage/:id" component={EditProfileImage}  />
+            <PrivateRoute exact path="/developers"  component={Developers}/>
+            <PrivateRoute exact path="/profile/:id"  component={DeveloperDetails}/> 
+            <PrivateRoute exaxt path="/developerPosts/:id" component={DeveloperPosts} />
  
 
             <PrivateRoute exact path="/posts" component={Posts} />
-            <Route exact path="/post/:id" component={PostDetails}  />
-            <Route exact path="/editPost/:id" component={EditPostFormik}  />
+            <PrivateRoute exact path="/post/:id" component={PostDetails}  />
+            <Route exact path="/editPost/:id" component={EditPost}  />
 
             <Route path="*" component={NotFoundPage} />
          </Switch>

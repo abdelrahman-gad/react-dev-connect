@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import Jumbotron from '../recources/UI/Jumbotron';
 import {showLoading} from '../recources/UI/helpers';
 import { fetchPosts } from '../../store/actions/postsActions';
-
+import {formatDate} from '../recources/UI/helpers';
 
 const  Posts =  ( props ) =>   {
            const  { completePosts , auth  } = props; 

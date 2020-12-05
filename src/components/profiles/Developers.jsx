@@ -6,6 +6,7 @@ import {compose } from 'redux';
 import {showReadableDate} from '../../utils/utilsFuncs';
 import Jumbotron from '../recources/UI/Jumbotron';
 import {Loading} from '../recources/UI/helpers';
+import {formatDate} from '../recources/UI/helpers';
 
 const  Developers = props =>  {
         const { developers }  = props;  
@@ -33,7 +34,7 @@ const  Developers = props =>  {
                                         <h1> {developer.handle} </h1>
                                         <p> {developer.jobTitle} </p>
                                         <p> {developer.location} </p>
-                                        <p className="text-primary"> Joined at {showReadableDate(developer.createdAt)} </p>
+                                        <p className="text-primary"> Joined at  {formatDate(developer.createdAt.toDate())}</p>
                                         <NavLink exact to={"/profile/"+developer.id} target="_parent" className="btn btn-primary">View Profile</NavLink>
                                     </div>
                                         {

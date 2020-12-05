@@ -7,8 +7,8 @@ import Comments from './comments/Comments';
 import ReactsBar from './ReactsBar';
 import {showReadableDateTime} from '../../utils/utilsFuncs';
 import { Loading } from '../recources/UI/helpers';
-import { CompareSharp } from '@material-ui/icons';
 
+import {formatDate} from '../recources/UI/helpers';
 
 const PostDetails = ( props ) => {
 
@@ -39,7 +39,7 @@ const PostDetails = ( props ) => {
                                           <p className="body"> 
                                             {body}
                                           </p>
-                                          <h4>posted at : <span className="text-primary"> {showReadableDateTime(createdAt)}  </span>  </h4>
+                                          <h4>posted at : <span className="text-primary">  {formatDate(createdAt.toDate())}</span>  </h4>
                                         </div>  
                                     </div> 
                                   </div>                        

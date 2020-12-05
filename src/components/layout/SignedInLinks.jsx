@@ -5,8 +5,8 @@ import {readNotification} from '../../store/actions/notificationsActions';
 import { compose } from 'redux';
 import { NavLink , Redirect , withRouter } from 'react-router-dom';
 import {firestoreConnect} from 'react-redux-firebase';
-import {showReadableDateTime} from './../../utils/utilsFuncs';
 import { isActive } from './helpers';
+import {formatDate} from '../recources/UI/helpers';
 
 const SigndInLinks  = ( { logOut , readNotification  , notifications , history } )  => {
       
@@ -87,7 +87,7 @@ const SigndInLinks  = ( { logOut , readNotification  , notifications , history }
                                       > 
                                       {notification.body}
                                     </span> 
-                                    <span> at { showReadableDateTime(notification.createdAt)} </span>
+                                    <span> at  {formatDate(notification.createdAt.toDate())}  </span>
                               </NavLink>                            
                             );
                   }):<NavLink 

@@ -5,7 +5,7 @@ import {compose } from 'redux';
 import Educations from './Educations';
 import Experiences from './Experiences';
 import {deleteAccount} from '../../store/actions/authActions';
-const  AuthUserDetails = ({auth , deleteAccount }) => {
+const  AuthUserDetails = ({ deleteAccount }) => {
 
    const [showConfirm , setShowConfirm] = useState(false);
    const  handleDelete= e => {
@@ -61,10 +61,10 @@ const  AuthUserDetails = ({auth , deleteAccount }) => {
 }
 
 const mapStateToProps = (state) =>{
-    const auth = state.firebase.auth;
+    
     const profile = state.firebase.profile;
     return {
-       auth,
+      
        profile    
     }
 }

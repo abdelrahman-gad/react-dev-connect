@@ -1,111 +1,97 @@
-import React from 'react';
+import React  , {useState , useEffect } from 'react';
 import {firestoreConnect} from 'react-redux-firebase';
-import {compose } from 'redux';
 import {connect} from 'react-redux';
 import {editPost} from '../../store/actions/postsActions';
-class EditPost extends React.Component{
-  
-    constructor(props){
-        super(props);
-        const { post } = props;
-        console.log(post);
-        console.log(props);
-        this.state={
-            body: post?post.body:'',
-            postError:''   
-        }
-        this.handleChange=this.handleChange.bind(this);
-        this.handleSubmit=this.handleSubmit.bind(this);
-    }
-    handleChange=(e) => {
-        this.setState({
-            [e.target.id]:e.target.value
-        });
-        console.log(this.state.body);
-    }
+import {compose} from 'redux';
+import FormikControl from '../../components/recources/formikComponents/FormikControl';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import Jumbotron  from '../recources/UI/Jumbotron';
+import { toast } from 'react-toastify';
+const  EditPost = (  { editPost , post } ) => {
 
-    handleSubmit=(e)=>{
-        e.preventDefault();
-        const { editPost , post } = this.props;
-        if(this.state.body.length < 5){
-            this.setState({
-                postError:'post length should be 5 characters length at least'
+          
+            useEffect( ()=> {
+                if(post){
+                    const { body , postId  } = post;         
+                    setInitialValues({
+                        body,
+                        postId
+                    });       
+                }
+            } ,[post]);
+            const [initialValues , setInitialValues ] = useState({
+                body: "",
+                postId: ""
             });
-        }else{
-            editPost({...post,body:this.state.body});
-            this.setState({
-                body:'',
-                postError:''
-            });
+            const   validationSchema = Yup.object({
+                body: Yup.string()
+                  .min(5, 'Must be 5 characters or more')
+                  .required('Required field')
+              });
 
-            this.props.history.push('/posts');
-        }   
-    }
+            const onSubmit =(values, { setSubmitting }) => {
+                setTimeout(() => {    
+                    console.log(values);
+                    console.log(initialValues);
+                  editPost({...values });
+                  
+                  setSubmitting(false);
+                  toast.success(`You have updated post successfully` , {  
+                    position:toast.POSITION.BOTTOM_RIGHT,
+                    autoClose:8000
+                  });
+                }, 400);
+              }
 
-    componentWillReceiveProps(nextProps){
-        const post  = nextProps.post;
-        console.log(post);
-        this.mapPostToProps(post);
-    }
-    mapPostToProps(post){
-        this.setState({
-            body:post.body
-        })
-    }
+              const handleChange = e => {
+                  setInitialValues({...initialValues,body:e.target.value})
+              }
 
-
-    // componentDidMount(){
-    //     const { post } = this.props;
-    //     console.log(post);
-    //     if(post){
-    //         this.setState({
-    //             body:post.body
-    //         })
-    //     }
-    // }
-    
-
-
-    render(){
-        const { post } = this.props;
-          if(post){
               return (
                   <div className="container">
-                     <form className="form my-1" onSubmit={this.handleSubmit}>
-                         <p className="text-danger my-1"> {this.state.postError} </p>
-                         <textarea cols="30" rows="5" value={this.state.body} placeholder="Create a post" id='body' onChange={ (e) =>this.handleChange(e) }>  </textarea>
-                         <input type="submit" value="Submit" className="btn btn-dark my-1" />
-                     </form>          
+                      <Jumbotron title="Edit post page" description="post body"></Jumbotron>
+                      <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={onSubmit}
+                        enableReinitialize
+                        >
+                        {formik => 
+                         {
+                         return (
+                            <Form>
+                                <div className="form-group">
+                                    <FormikControl
+                                        control='textarea'
+                                        name='post'
+                                        value={initialValues.body}
+                                        cols="70"
+                                        onChange={(e)=>handleChange(e)}
+
+                                    />
+
+                                </div>
+                                <input type="submit"  className="btn btn-primary" value="Update Post "  />
+                            </Form>
+                             )}
+                        }
+                        </Formik>        
                   </div>
              );
-          }else{
-              return (
-                  <div className="container">
-                       <h2 className="text-primary text-center loading"> Loading post ......</h2>
-                  </div> 
-              );
           }
 
-    }
-}
+
+
 const mapStateToProps = (state ,ownProps )=> {
-    const auth = state.firebase.auth;
     const postId= ownProps.match.params.id;
     const posts = state.firestore.data.posts;
     const post = posts ? posts[postId]:undefined;
     // console.log(posts);
     // console.log(post);
-
-    if(auth && post ){
-        return{
-            auth,
-            post
-        }
-    }else if(auth){
-        return {
-            auth
-        }
-    }else return {};
+   return {
+       post
+   }
 }
 
 const mapDispatchToProps = (dispatch,ownProps)=>{

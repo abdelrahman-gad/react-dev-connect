@@ -5,6 +5,7 @@ import {showReadableDateTime} from '../../utils/utilsFuncs';
 import {connect} from 'react-redux';
 import {deletePost } from '../../store/actions/postsActions';
 import { Loading } from '../recources/UI/helpers';
+import {formatDate} from '../recources/UI/helpers';
 import {confirmAlert} from 'react-confirm-alert';
 import { toast } from 'react-toastify';
 
@@ -60,7 +61,7 @@ const PostSummary =  ( props ) => {
                        {body}
                        <br/>           
                      </p>
-                     <h4>posted at : <span className="text-primary"> {showReadableDateTime(createdAt)}  </span>  </h4>
+                     <h4>posted at : <span className="text-primary"> {formatDate(createdAt.toDate())}  </span>  </h4>
                      <ReactsBar  reacts={reacts} reactableType={"post"}  reactableId={postId} reactedId={user.userId} reactorId={auth.uid}  />
                     
                      <NavLink   to={'/post/'+postId}   className="btn">

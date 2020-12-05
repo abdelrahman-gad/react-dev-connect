@@ -1,76 +1,56 @@
-import React from 'react';
+import React , { useState , Fragment } from 'react';
 import {connect} from 'react-redux';
 import { NavLink, Redirect} from 'react-router-dom';
 import {firestoreConnect} from 'react-redux-firebase';
 import {compose } from 'redux';
-class DeveloperDetails extends React.Component{
+import {showLoading} from '../recources/UI/helpers';
+import {formatDate} from '../recources/UI/helpers';
 
 
-      constructor(props){
-          super(props);
-          this.handleUrl=this.handleUrl.bind(this);
-      }
-      handleUrl(e,url){
+const  DeveloperDetailsNew =  ( { developer  }) => {
+
+   //console.log(developer);
+  
+   const  [developerInfo , setDeveloperInfo] = useState({});
+   const  [loading , setLoading ] = useState(true);
+
+   const  handleUrl = (e,url ) => {
           e.preventDefault();
-         // console.log(url);
+          // console.log(url);
+          if(!url){
+              return;
+            }else{
+              window.location.href=window.location.href='https://'+url;
+          }
+   }
 
-          url.includes('https://')?window.location.href=url:window.location.href='https://'+url;
-          
-        }
-
-    render(){
-            let  { auth , developer } = this.props;
-       
-            
-                if(! developer ){
-                    return (
-                        <div className="container">
-                            <h1 className="text-center text-primary loading">Loading data.........</h1>
-                        </div>
-                    );
-                }else{
-                   
-                  
-                   
-                   let { educations , experiences } = developer;
-                   
-                
-
-
-
-                return (
-                  <section className="container">
-                    <NavLink exact to="/developers" className="btn">Back To Profiles</NavLink>
+   const showDeveloper = () => (
+      <Fragment>
+           <NavLink exact to="/developers" className="btn">Back To Profiles</NavLink>
                     <div className="profile-grid my-1">
                       <div className="profile-top bg-primary p-2">
                         <img
-                          className="round-img my-2"
+                          className="img-rounded my-2"
                           src={developer.imageUrl}
                           alt="user "
                         />
-                        <h1 className="large"> {developer.handle} </h1>
+                        <h1 className="large mt-2"> {developer.handle} </h1>
                         <p className="lead"> {developer.jobTitle} </p>
-                        {/* <p> Joined At {showReadableDate(developer.createdAt)}   </p> */}
+                        <p> Joined At  {formatDate(developer.createdAt.toDate())}  </p>
                         <p> {developer.location} </p>
                         <div className="icons my-1">
                           
-                        {/* {
-                         socialLinks
-                           ?                  
+                                        
                             <span> 
-                                <i   onClick={(e)=>this.handleUrl(e,developer.website)} className="fas fa-globe fa-2x"></i>
-                                <i    onClick={(e)=>this.handleUrl(e,developer.twitter)} className="fab fa-twitter fa-2x"></i>
-                                <i    onClick={(e)=>this.handleUrl(e,developer.githubUsername)} className="fab fa-github fa-2x"></i>
-                           
-                                <i   onClick={(e)=>this.handleUrl(e,developer.facebook)}  className="fab fa-facebook fa-2x"></i>
-                                <i  onClick={(e)=>this.handleUrl(e,socialLinks.linkedin)} className="fab fa-linkedin fa-2x"></i>                          
-                                <i   onClick={(e)=>this.handleUrl(e,socialLinks.instagram)} className="fab fa-instagram fa-2x"></i>
-                             
-                              <NavLink exact to={"/developerPosts/"+developer.userId} > <i className="fas fa-comment-alt fa-2x"></i> </NavLink>                             
+                                <i    onClick={(e)=>handleUrl(e,developer.website)} className="fas fa-globe fa-2x"></i>
+                                <i    onClick={(e)=>handleUrl(e,developer.twitter)} className="fab fa-twitter fa-2x"></i>
+                                <i    onClick={(e)=>handleUrl(e,developer.githubUsername)} className="fab fa-github fa-2x"></i>                          
+                                <i    onClick={(e)=>handleUrl(e,developer.facebook)}  className="fab fa-facebook fa-2x"></i>
+                                <i    onClick={(e)=>handleUrl(e,developer.linkedin)} className="fab fa-linkedin fa-2x"></i>                          
+                                <i    onClick={(e)=>handleUrl(e,developer.instagram)} className="fab fa-instagram fa-2x"></i>
+                                <NavLink exact to={"/developerPosts/"+developer.userId} > <i className="fas fa-comment-alt fa-2x"></i> </NavLink>                             
                             </span> 
-                             :
-                             <NavLink exact to={"/developerPosts/"+developer.userId} > <i className="fas fa-comment-alt fa-2x"></i> </NavLink>
-                          } */}
+                                                       
                         </div>
                       </div>
                     
@@ -93,10 +73,10 @@ class DeveloperDetails extends React.Component{
                       <div className="profile-exp bg-white p-2">
                         <h1 className="text-primary">Experiences</h1>
 
-                        { experiences && experiences.map( experience =>{
+                        { developer.experiences && developer.experiences.map( experience => {
                            return (
                             <div key={experience.id}>
-                                <h3> {experiences.company} </h3>
+                                <h3> {experience.company} </h3>
                                  <p> {experience.fromDate}-  {experience.toDate} </p>
                                 <p><strong>Position : </strong> {experience.jobTitle} </p>
                                 <p><strong>Description : </strong> {experience.description} </p>
@@ -110,11 +90,11 @@ class DeveloperDetails extends React.Component{
                         
                         <div className="profile-edu bg-white p-2">
                           <h1 className="text-primary">Education</h1>
-                          {educations && educations.map(education=>{
+                          {developer.educations && developer.educations.map(education=>{
                               return (
                                 <div key={education.id}>
                                     <h3>{education.school} </h3>
-                                    <p> {education.fromDate}- {education.toDate} </p>
+                                    {/* <p> {education.fromDate}- {education.toDate} </p> */}
                                     <p><strong>Degree : </strong> {education.degree} </p>
                                     <p><strong>Field : </strong> {education.field} </p>
                     
@@ -126,18 +106,22 @@ class DeveloperDetails extends React.Component{
                                                 
                       </div>                                                 
                     </div>
-                  </section>
-                );    
-                }
-
-            
-          
-    }
+      </Fragment>
+   )  
+   
+    return (
+           <section className="container">
+                    <h1> Developer Details New </h1>
+                    { ( Object.keys(developer).length >= 1) ? showDeveloper():showLoading(true) }
+            </section>
+        );    
+              
+    
 }
 
 
         
-    const mapStateToProps = (state,ownProps)=>{
+    const mapStateToProps = ( state , ownProps ) => {
         const userId = ownProps.match.params.id;
       
         //console.log(userId);
@@ -154,33 +138,31 @@ class DeveloperDetails extends React.Component{
            experiences = experiences?experiences.filter(experience=>experience.userId===userId):undefined;                 
          
            let developer = {};
-           //console.log(developer);
-
+         
            if(user){
              developer={...user};
-          //   console.log(developer);
            }
            
 
            if(profile){
-             developer={
+             developer = {
                   ...developer,
                   ...profile
                 }
            } 
 
            if(educations){
-             developer={
+             developer = {
                ...developer,
                educations
              }
            }
            if(experiences){
-             developer={
+             developer = {
                ...developer,
                experiences
              }
-           //  console.log(developer);
+           
            }
 
           
@@ -196,18 +178,11 @@ class DeveloperDetails extends React.Component{
          *           };
          * 
          * */ 
-
-       
-
-        if( auth && developer ){
-          return {
-            auth,
-            developer    
-           };
-          }else  return { auth }
-          
         
-        }
+        return {
+            developer    
+        };                  
+ }
 
 export default compose(
     connect(mapStateToProps,null),
@@ -215,10 +190,8 @@ export default compose(
         {collection:'users'},
         {collection:'profiles'},
         {collection:'educations'},
-        {collection:'experiences'}
-
-    
+        {collection:'experiences'}   
     ])
   )
-  (DeveloperDetails);
+  (DeveloperDetailsNew);
 

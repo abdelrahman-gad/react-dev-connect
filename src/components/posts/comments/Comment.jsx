@@ -7,6 +7,7 @@ import {deleteComment}  from '../../../store/actions/commentsActions';
 import {Loading} from '../../recources/UI/helpers';
 import {confirmAlert} from 'react-confirm-alert';
 import { toast } from 'react-toastify';
+import { formatDate } from '../../recources/UI/helpers';
 
 const  Comment  = ( props ) => {
     const { deleteComment , comment , auth } = props;
@@ -77,7 +78,7 @@ const  Comment  = ( props ) => {
                                           <i className="fas fa-trash text-danger">  </i>
                                         </button>:null
                                  }
-                                <span className="text-primary"> {showReadableDateTime(comment.createdAt)}  </span>
+                                <span className="text-primary"> {formatDate(comment.createdAt.toDate())}  </span>
                            </span>   
                           </p>
                     </div>
