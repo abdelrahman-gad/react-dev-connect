@@ -1,27 +1,25 @@
-import React  , {useState , useEffect } from 'react';
-import {Redirect} from 'react-router-dom';
+import React  from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addExperience } from '../../store/actions/profilesActions';
-import {NavLink} from 'react-router-dom';
 import Jumbotron  from '../recources/UI/Jumbotron';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik,  Form } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-datepicker/dist/react-datepicker.css';
 import FormikControl from '../../components/recources/formikComponents/FormikControl';
-function AddExperience (  {AddExperience} ) {
+function AddExperience (  {addExperience} ) {
  
 
 
-  const [initialValues , setInitialValues] = useState({
+  const initialValues ={
     company: '',
     jobTitle:'',
     location:'',
     description: '',
     fromDate:'',
     toDate:'',
-  });
+  };
   const validationSchema = Yup.object({
     company: Yup.string().required('Required'),
     description: Yup.string().required('Required'),
@@ -102,7 +100,7 @@ function AddExperience (  {AddExperience} ) {
               control='date'
               label='Pick a date'
               name='fromDate'
-              label="from date"
+             
               className='form-control'
             />
     

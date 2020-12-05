@@ -5,7 +5,6 @@ import {firestoreConnect} from 'react-redux-firebase';
 import {compose } from 'redux';
 import Comments from './comments/Comments';
 import ReactsBar from './ReactsBar';
-import {showReadableDateTime} from '../../utils/utilsFuncs';
 import { Loading } from '../recources/UI/helpers';
 
 import {formatDate} from '../recources/UI/helpers';

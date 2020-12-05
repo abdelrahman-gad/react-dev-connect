@@ -1,11 +1,10 @@
 import React from 'react';
-import {connect } from 'react-redux';
+import { connect } from 'react-redux';
 import ReactsBar from './../ReactsBar';
-import {showReadableDateTime} from '../../../utils/utilsFuncs';
 import { NavLink } from 'react-router-dom';
-import {deleteComment}  from '../../../store/actions/commentsActions';
-import {Loading} from '../../recources/UI/helpers';
-import {confirmAlert} from 'react-confirm-alert';
+import { deleteComment}  from '../../../store/actions/commentsActions';
+import { Loading} from '../../recources/UI/helpers';
+import { confirmAlert } from 'react-confirm-alert';
 import { toast } from 'react-toastify';
 import { formatDate } from '../../recources/UI/helpers';
 
@@ -36,12 +35,8 @@ const  Comment  = ( props ) => {
      });
    } 
    
-
-
-     
-      //console.log(comment);
       if(! ( comment && comment.reacts && comment.user)){
-            {Loading('Loading comments .....')}
+             Loading('Loading comments .....') 
          }
          else{
            //  showReadableTime(comment.createdAt);

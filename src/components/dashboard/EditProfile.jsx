@@ -1,11 +1,10 @@
 import React , {useState , useEffect} from 'react';
 import { firestoreConnect } from 'react-redux-firebase';
-import {Redirect, NavLink} from 'react-router-dom';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {editProfile } from '../../store/actions/profilesActions';
 import FormikControl from '../../components/recources/formikComponents/FormikControl';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Jumbotron  from '../recources/UI/Jumbotron';
 import { toast } from 'react-toastify';

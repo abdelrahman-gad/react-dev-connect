@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {firestoreConnect} from 'react-redux-firebase';
 import {compose } from 'redux';
-import {showReadableDate} from '../../utils/utilsFuncs';
 import Jumbotron from '../recources/UI/Jumbotron';
 import {Loading} from '../recources/UI/helpers';
 import {formatDate} from '../recources/UI/helpers';

@@ -4,7 +4,7 @@ import Comment from './Comment';
 
 const Comments  = (props) => {
 
-        const { postId , comments  , auth } =props;
+        const { postId , comments  , auth } = props;
         //console.log(postId);
       //  console.log(comments);
         return (

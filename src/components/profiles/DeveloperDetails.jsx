@@ -1,6 +1,6 @@
-import React , { useState , Fragment } from 'react';
+import React , {   Fragment } from 'react';
 import {connect} from 'react-redux';
-import { NavLink, Redirect} from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import {firestoreConnect} from 'react-redux-firebase';
 import {compose } from 'redux';
 import {showLoading} from '../recources/UI/helpers';
@@ -121,8 +121,7 @@ const  DeveloperDetailsNew =  ( { developer  }) => {
     const mapStateToProps = ( state , ownProps ) => {
         const userId = ownProps.match.params.id;
       
-        //console.log(userId);
-        let auth =state.firebase.auth;
+      
         let users = state.firestore.data.users;
         let profiles  = state.firestore.data.profiles;
         

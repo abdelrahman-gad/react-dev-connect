@@ -1,11 +1,9 @@
-import React  , {useState , useEffect } from 'react';
-import {Redirect} from 'react-router-dom';
+import React   from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addEducation } from '../../store/actions/profilesActions';
-import {NavLink} from 'react-router-dom';
 import FormikControl from '../../components/recources/formikComponents/FormikControl';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik,  Form } from 'formik';
 import * as Yup from 'yup';
 import Jumbotron  from '../recources/UI/Jumbotron';
 import { toast } from 'react-toastify';
@@ -15,14 +13,14 @@ function AddEducation (  {addEducation} ) {
  
 
 
-  const [initialValues , setInitialValues] = useState({
+  const initialValues  = {
     school: '',
     degree:'',
     field:'',
     fromDate:'',
     toDate:'',
     description: ''
-  });
+  };
   
   const validationSchema = Yup.object({
     school: Yup.string().required('Required'),
@@ -76,7 +74,7 @@ function AddEducation (  {addEducation} ) {
               <FormikControl
                 control='degree'
                 type='text'
-                control="input"
+
                 placeholder="add degree"
                 name='degree'
                 className="form-control"
@@ -96,8 +94,7 @@ function AddEducation (  {addEducation} ) {
             <FormikControl
               control='date'
               label='Pick a date'
-              name='fromDate'
-              label="from date"
+              name='fromDate'           
               className='form-control'
             />
        
@@ -106,8 +103,7 @@ function AddEducation (  {addEducation} ) {
             <FormikControl
               control='date'
               label='Pick a date'
-              name='toDate'
-            
+              name='toDate'        
               placeholder="to date"
               className="form-control"
             />
@@ -117,8 +113,7 @@ function AddEducation (  {addEducation} ) {
                 control='textarea'
                 className="form-control"
                 placeholder='add description'
-                name='description'
-                
+                name='description'         
               />
            </div>      
         <input type="submit"  className="btn btn-primary" value="add Education"  />

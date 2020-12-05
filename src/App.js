@@ -1,18 +1,13 @@
 import React from 'react';
-import { createBrowserHistory } from "history";
 import Navbar from './components/layout/Navbar';
-
 import './styles/App.scss';
-
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import { BrowserRouter , Switch , Route} from 'react-router-dom';
-
 import Dashboard from './components/dashboard/Dashboard';
 import PostDetails from './components/posts/PostDetails';
 import Posts from './components/posts/Posts';
 import EditProfile from './components/dashboard/EditProfile';
-
 import AddExperience from './components/dashboard/AddExperience';
 import AddEducation from './components/dashboard/AddEducation';
 import EditProfileImage from './components/dashboard/EditProfileImage';
@@ -20,7 +15,6 @@ import NotFoundPage from './components/layout/NotFoundPage';
 import HomePage from './components/layout/HomePage';
 import Developers from './components/profiles/Developers';
 import DeveloperDetails from './components/profiles/DeveloperDetails';
-
 import DeveloperPosts from './components/profiles/DeveloperPosts';
 import EditPost from './components/posts/EditPost';
 import PrivateRoute from './components/auth/PrivateRoute';

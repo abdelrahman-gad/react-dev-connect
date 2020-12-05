@@ -1,7 +1,7 @@
 import React , {useState} from 'react';
 import {storage} from '../../config/fbConfig';
 import { firestoreConnect } from 'react-redux-firebase';
-import {Redirect, NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {editProfileImage } from '../../store/actions/profilesActions';

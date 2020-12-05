@@ -4,7 +4,6 @@ import AddPost from '../posts/AddPost';
 import { firestoreConnect } from 'react-redux-firebase';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import {Loading} from '../recources/UI/helpers';
 import Jumbotron from '../recources/UI/Jumbotron';
 

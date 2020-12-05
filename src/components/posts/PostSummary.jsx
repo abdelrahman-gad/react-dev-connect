@@ -1,7 +1,6 @@
-import React ,{ useState , useEffect, Fragment} from 'react';
+import React from 'react';
 import {NavLink} from 'react-router-dom';
 import ReactsBar from './ReactsBar';
-import {showReadableDateTime} from '../../utils/utilsFuncs';
 import {connect} from 'react-redux';
 import {deletePost } from '../../store/actions/postsActions';
 import { Loading } from '../recources/UI/helpers';

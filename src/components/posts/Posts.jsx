@@ -1,28 +1,14 @@
-import React , { useState ,  useEffect  } from 'react';
+import React from 'react';
 import AddPost from './AddPost';
 import PostSummary from './PostSummary';
 import { firestoreConnect } from 'react-redux-firebase';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import Jumbotron from '../recources/UI/Jumbotron';
-import {showLoading} from '../recources/UI/helpers';
-import { fetchPosts } from '../../store/actions/postsActions';
-import {formatDate} from '../recources/UI/helpers';
 
 const  Posts =  ( props ) =>   {
            const  { completePosts , auth  } = props; 
-           const  [posts , setPosts ]  = useState([]); 
-           const  [loading , setLoading ] = useState(true);
-           // next is a callback function
-           const loadPosts =   next  => {
-             setPosts( completePosts );
-             next();
-           }   
-                
-           useEffect( () => {
-             loadPosts( ( ) => setLoading(false));      
-           } , [completePosts] );
-
+          
            const  showPosts =  posts  => 
             (  <div className="posts">       
                 {
@@ -43,17 +29,13 @@ const  Posts =  ( props ) =>   {
               <div className="post-form">
                 <AddPost  props={props} />
               
-                {showPosts(posts)}
+                { completePosts?.length > 0 &&  showPosts(completePosts)}
               </div>
              </section>
            );     
    }
 
-   const mapDispatchToProps = dispatch => {
-     return {
-       fetchPosts: () => dispatch(fetchPosts())
-     }
-   }
+ 
 
 const mapStateToProps =  state  => {     
       let users = state.firestore.data.users;   
@@ -120,7 +102,7 @@ const mapStateToProps =  state  => {
 
 
 export default compose(
-    connect(mapStateToProps , mapDispatchToProps),
+    connect(mapStateToProps , null),
     firestoreConnect([
        { collection:'posts'},
        { collection:'users'},

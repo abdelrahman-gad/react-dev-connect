@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {editPost} from '../../store/actions/postsActions';
 import {compose} from 'redux';
 import FormikControl from '../../components/recources/formikComponents/FormikControl';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Jumbotron  from '../recources/UI/Jumbotron';
 import { toast } from 'react-toastify';

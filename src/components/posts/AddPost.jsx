@@ -1,4 +1,4 @@
-import React   , {Fragment, useState} from 'react';
+import React   from 'react';
 import {connect} from 'react-redux';
 import {addPost} from '../../store/actions/postsActions';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
