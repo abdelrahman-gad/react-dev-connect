@@ -1,4 +1,7 @@
 import {  
+  FETCH_POSTS_REQUEST,
+  FETCH_POSTS_SUCCESS,
+  FETCH_POSTS_ERROR,
   ADD_POST_SUCCESS ,
   ADD_POST_ERROR ,
   DELETE_POST_SUCCESS , 
@@ -10,19 +13,35 @@ import {
 
 
 const initState = {
-   addPostError:null,
-   deletePostError:null,
-   editPostError:null
+  loading:false,
+  posts:[],
+  error:''
 };
 
 const  postReducer  =  ( state= initState , action )=>{
         switch(action.type){
+          case FETCH_POSTS_REQUEST:
+            return {
+              ...state,
+              loading: true
+            }
+          case FETCH_POSTS_SUCCESS:
+            return {
+              loading: false,
+              posts: action.payload,
+              error: ''
+            }
+          case FETCH_POSTS_ERROR:
+            return {
+              loading: false,
+              posts: [],
+              error: action.payload
+            }
           case ADD_POST_SUCCESS:
             return  state;
           case ADD_POST_ERROR:
             return {
-              ...state,
-               addPostError:action.payload
+              ...state
             }; 
           case DELETE_POST_SUCCESS:
             return state;
@@ -31,7 +50,6 @@ const  postReducer  =  ( state= initState , action )=>{
               ...state,
               deletePostError:action.payload
             }  
-
           case EDIT_POST_SUCCESS:
               return state;
            case EDIT_POST_ERROR:

@@ -17,6 +17,7 @@ class HomePage extends React.Component {
                return <Redirect exact to="signin" />
            }else{
             return(
+           
                 <section className="landing">                       
                  <img  className="landing-img" src={process.env.PUBLIC_URL+'/imgs/showcase.jpg'} alt="landing page "/>                  
                  <div className="dark-overlay">
@@ -28,16 +29,13 @@ class HomePage extends React.Component {
                         create developer portfolio/account post blogs and also get help from
                         the others
                     </p>
-                    
                       {auth.uid ?null:links }
-
                     </div>
-                </div>
-                
-                </section>              
+                 </div>            
+                </section> 
+                     
             );
-    
-           }
+         }
     }
 
 

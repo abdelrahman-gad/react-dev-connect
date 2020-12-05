@@ -1,176 +1,135 @@
-import React from 'react';
+import React  , {useState , useEffect } from 'react';
 import {Redirect} from 'react-router-dom';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {addEducation } from '../../store/actions/profilesActions';
 import {NavLink} from 'react-router-dom';
+import FormikControl from '../../components/recources/formikComponents/FormikControl';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import Jumbotron  from '../recources/UI/Jumbotron';
+import { toast } from 'react-toastify';
+import 'react-datepicker/dist/react-datepicker.css';
+function AddEducation (  {addEducation} ) {
 
-class AddEducation extends React.Component{
+ 
 
-    constructor(props){
-       super(props);
-       
-     //  console.log(props);
-       
-        this.state = {
-             school:'',
-             degree:'',
-             field:'',
-             fromDate:'',
-             toDate:'',
-             description:'',
-             emptyInputsError:''
-        }
 
-       //binding methods
-       this.handleChange=this.handleChange.bind(this);
-       this.handleSubmit=this.handleSubmit.bind(this);
-    }
-   
-    
+  const [initialValues , setInitialValues] = useState({
+    school: '',
+    degree:'',
+    field:'',
+    fromDate:'',
+    toDate:'',
+    description: ''
+  });
   
-
-   
-    handleChange(e){
-      e.preventDefault();
-    //  console.log(e.target.id,e.target.value);
-       this.setState({
-        [e.target.id]:e.target.value
-        });
-      //console.log(this.state);
-    }
-    
-    handleSubmit(e){
-      e.preventDefault();
-       const {addEducation } = this.props;
-       const {school,degree,fromDate,toDate,field,description}=this.state;
-       let inputsArray= [school,degree,fromDate,toDate,description];
-       if(inputsArray.some(input=>input.length === 0)){
-         this.setState({
-             emptyInputsError:'Please fill up all required inputs'
-         });
-       }else{
-        // console.log('all fields are filled');
-        addEducation({school,degree,fromDate,toDate,field,description});
-        this.setState({
-          emptyInputsError:''
-        });
-        this.props.history.push('/dashboard');
-      }
-    }
-    render(){
-     //   console.log('add education component');
-        const { auth  } = this.props;
-        console.log(auth);
-        if(!auth.uid){
-          return (<Redirect exact to="/" />);
-        } else{
-          return (
-            <section className="container">
-                <h1 className="large text-primary">
-                 Add Education
-                </h1>
-                <p className="lead">
-                  <i className="fas fa-user"></i> Let's fill up expereince
-                </p>
-                <small> * = required fields</small>
-
-                <form className="form" onSubmit={this.handleSubmit}>
-                { this.state.emptyInputsError.length>0? <div className='alert alert-danger'> {this.state.emptyInputsError} </div>:null}
-                    <div className="form-group">
-                      
-                        <input 
-                          onChange={this.handleChange}
-                          value={this.state.school}
-                          type="text" 
-                          id="school"
-                          placeholder="* school or bootcamp"
-                          name="school" 
-                        
-                        />
-                        
-                    </div>
-                  <div className="form-group">
-
-                    <input 
-                          onChange={this.handleChange}
-                          value={this.state.field}
-                          type="text" 
-                          id="field"
-                          placeholder="* Field "
-                          name="field" 
-                        
-                       />
-                        
-                    </div>
-                    <div className="form-group">
-                        <input 
-                        onChange={this.handleChange}
-                        value={this.state.degree}
-                        type="text" 
-                        id="degree"
-                        placeholder="* degree"
-                        name="degree" />
-                        
-                    </div>
-                   
-                    <div className="form-group">
-                        <label>* From Date </label>
-                        <input 
-                        onChange={this.handleChange}
-                        value={this.state.fromDate}
-                        type="date" 
-                        id="fromDate"
-                        name="fromDate" />
-                        
-                    </div>
-
-                    <div className="form-group">
-                        <label>* To Date </label>
-                        <input 
-                            onChange={this.handleChange}
-                            value={this.state.toDate}
-                            type="date" 
-                            id="toDate"
-                            name="toDate" />
-                        
-                     </div>
-                    
-                    <div className="form-group">
-                        <input 
-                            onChange={this.handleChange}
-                            value={this.state.description}
-                            type="text" 
-                            placeholder="* description"
-                            id="description"
-                            name="description" />
-                        
-                    </div>
-                   
-                    <input type="submit" className="btn btn-primary" />
-                    <NavLink className="btn btn-light" to="/dashboard">Go Back</NavLink>
-                </form>
-            </section>   
-          );
-          
-        } 
-         
-       
-    }
-  }
-
-const mapStateToProps = (state,ownProps) =>{
-  
-  
-      if(state.firebase.auth.uid){
-        return {
-          auth:state.firebase.auth       
-        };
-      }else return {};
-       
+  const validationSchema = Yup.object({
+    school: Yup.string().required('Required'),
+    degree: Yup.string().required('Required'),
+    field: Yup.string().required('Required'),
+    fromDate: Yup.date()
+      .required('Required'),
+    toDate: Yup.date()
+      .required('Required'),
+    description: Yup.string().required('Required')
+  })
+  const onSubmit = (values  , {resetForm} )  => {
+    console.log("submitted");
+    console.log(values);
+    addEducation(values);
+   toast.success(`You have added eduacation item successfully` , {  
+    position:toast.POSITION.BOTTOM_RIGHT,
+    autoClose:8000
+    });
+    resetForm({values:{
+      school: '',
+      degree:'',
+      field:'',
+      fromDate:'',
+      toDate:'',
+      description: ''
+     }});
 }
-const mapDispatchToProps = (dispatch)=>{
 
+  return (
+    <section className="container">
+      <Jumbotron title="Add Education Item " ></Jumbotron>
+       <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+         
+        >
+      {formik => (
+        <Form>
+           <div className="form-group">
+              <FormikControl
+                control='input'
+                type='text'
+                name='school'
+                className="form-control"
+                placeholder="school name"
+              />
+           </div>
+           <div className="form-group">
+              <FormikControl
+                control='degree'
+                type='text'
+                control="input"
+                placeholder="add degree"
+                name='degree'
+                className="form-control"
+              />
+           </div>
+
+          <div className="form-group">
+              <FormikControl
+                control='input'
+                type='text'
+                placeholder='field'
+                name='field'
+                className="form-control"
+              />
+           </div>
+           <div className="form-group d-flex justify-content-between">
+            <FormikControl
+              control='date'
+              label='Pick a date'
+              name='fromDate'
+              label="from date"
+              className='form-control'
+            />
+       
+
+         
+            <FormikControl
+              control='date'
+              label='Pick a date'
+              name='toDate'
+            
+              placeholder="to date"
+              className="form-control"
+            />
+          </div> 
+          <div className="form-group">
+              <FormikControl
+                control='textarea'
+                className="form-control"
+                placeholder='add description'
+                name='description'
+                
+              />
+           </div>      
+        <input type="submit"  className="btn btn-primary" value="add Education"  />
+        </Form>
+      )}
+     </Formik>
+    </section>
+  )
+}
+
+const mapDispatchToProps = (dispatch)=> {
     return {
         addEducation :(education)=>dispatch(addEducation(education))
     }
@@ -178,7 +137,7 @@ const mapDispatchToProps = (dispatch)=>{
 }
 
 export default compose(
-  connect(mapStateToProps,mapDispatchToProps)
+  connect(null,mapDispatchToProps)
 )
 (AddEducation);
 

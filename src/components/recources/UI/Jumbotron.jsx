@@ -7,8 +7,7 @@ const Jumbotron = ({
     children
 }) => (
      <Fragment>
-            <h1 className="large text-primary">  {title} </h1>
-        
+            <h1 className="large text-primary">  {title} </h1>   
             <p className="lead"> {children} {description} </p>
      </Fragment>
 );

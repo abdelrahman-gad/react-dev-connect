@@ -1,64 +1,37 @@
-import React from 'react';
+import React , {useState} from 'react';
 import {storage} from '../../config/fbConfig';
 import { firestoreConnect } from 'react-redux-firebase';
 import {Redirect, NavLink} from 'react-router-dom';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {editProfileImage } from '../../store/actions/profilesActions';
+import Jumbotron from '../recources/UI/Jumbotron';
+import { Loading } from '../recources/UI/helpers';
 
 
-class EditProfileImage extends React.Component{
+const  EditProfileImage = ( props) => {
+
+    const [profileImage , setProfileImage] = useState(null);
+    const [uploadProgress,setUploadPrgress] = useState(0);
+    const [noSelectedImgError, setNoSelectedImgError]=useState(null);
+  
 
 
-    constructor(props){
-        super(props);
-        
-     
-       this.state = {
-           profileImage:null,
-           uploadProgress:0,
-           noSelectedImgError:null
-          }
-      //  this.props.profileImageUrl= 'mdmad';
-        //console.log(this.props);
-        this.handleChange=this.handleChange.bind(this);
-        this.handleUpload=this.handleUpload.bind(this);
-        
-    }
-
-
-    componentWillReceiveProps(nextProps){
-          // console.log(nextProps);
-          const { user } = nextProps;
-            if(user !== undefined){
-              this.mapProfileImageUrlToState(user.imageUrl);
-            }
-
-    }
-    mapProfileImageUrlToState(profileImageUrl){
-      this.setState({
-             profileImageUrl
-      });             
-
-    }
-    handleChange(e){
-      //console.log('file choosen');
+ const  handleChange= (e) => {
+      console.log('file choosen');
+      console.log(e.target.files);
            if(e.target.files[0]){
              //console.log(e.target.files[0]);
-             this.setState({
-                 profileImage:e.target.files[0]
-             });
-             this.setState({
-               noSelectedImgError:null
-             })
+            setProfileImage(e.target.files[0]);
+            setNoSelectedImgError(null);
              //console.log(this.state.profileImage);
            }
-    }
-    handleUpload(e){
-        //console.log('handle-upload');
-        // console.log(this.state.profileImage);
-        if(this.state.profileImage){
-        const uploadTask = storage.ref(`images/profiles/${this.state.profileImage.name}`).put(this.state.profileImage);
+  }
+
+   const  handleUpload = (e) => {
+       
+        if(profileImage){
+        const uploadTask = storage.ref(`images/profiles/${profileImage.name}`).put(profileImage);
           
           uploadTask.on(
             'state_changed',
@@ -66,108 +39,79 @@ class EditProfileImage extends React.Component{
               const progress = Math.round(
                 (snapshot.bytesTransferred/snapshot.totalBytes) * 100
               );
-              this.setState({
-                  uploadProgress:progress
-              })
+              setUploadPrgress(progress);
             },
             error => {
               //console.log(error);
             },
             () => {
                 storage.ref('images/profiles')
-                .child(this.state.profileImage.name)
+                .child(profileImage.name)
                 .getDownloadURL()
                 .then( url => {
                   //console.log(url);
-                  const { editProfileImage } = this.props;
+                  const { editProfileImage } = props;
                   editProfileImage(url);
                 })         
             }
         );
-        }else{
-          //console.log('Plz , select picture file before submitting');
-          this.setState({
-            noSelectedImgError:'Plz , select picture file before submitting'
-          })
-        }     
-       // console.log(uploadTask);
+        }else{  
+          setNoSelectedImgError('Plz , select picture file before submitting');
+        }        
     }
     
-    render(){
-        //console.log(storage);
-        const {user, auth } = this.props;
-        //console.log(auth)
-        //console.log(user);
 
-          if(!auth.uid){
-            return <Redirect exact to="/" />
-          }else{
-            if( user ){
+        const { user } = props;
+           
+            if(user){
+              console.log(user);
               return(
                 <div className="container">
-                     <h1 className="large text-primary">
-                        Create Your Profile
-                     </h1>
-                <p className="lead">
-                  <i className="fas fa-user"></i> Let's get some information to make your
-                  profile stand out
-                </p>
+                  <Jumbotron title="Edit Profile img" description="Edit You profile image">
+                    <i className="text-primary fas fa-user"> </i>
+                  </Jumbotron>
                 <div className="form-group">
                     <input
                       type="file"
                       className="form-control"
-                      onChange={this.handleChange}       
+                      onChange={(e) => handleChange(e)}       
                        /><br/>
-                      <progress  value={this.state.uploadProgress}  max="100" /> <br/>
+                      <progress  value={uploadProgress}  max="100" /> <br/>
                         {
-                           this.state.profileImageUrl? <img  className="rounded" src={this.state.profileImageUrl} alt="user"/>:<img  className="profile-img" src={process.env.PUBLIC_URL+'/default-user-img.jpeg'} alt="user default" />
+                         <div className="col-sm-10 offset-sm-1">
+                            { 
+                             user.imageUrl? <img  className="img-rounded edit-profile-img" src={user.imageUrl} alt="user"/>:<img  className="img-rounded edit-profile-img" src={process.env.PUBLIC_URL+'/default-user-img.jpeg'} alt="user default" />}                      
+                         </div>
                         }
-                     {this.state.noSelectedImgError &&  <div className="alert alert-danger">  {this.state.noSelectedImgError} </div> }
-                    <button onClick={this.handleUpload} className="btn btn-success"> submit profile image </button>
+                     {noSelectedImgError &&  <div className="alert alert-danger">  {noSelectedImgError} </div> }
+                    <button onClick={() => handleUpload()} className="btn btn-success"> submit profile image </button>
                     <NavLink className="btn btn-light my-1" to="/dashboard">Go Back</NavLink>
+                 </div>
                 </div>
-    
-                </div>
-            );              
-
-                
+            );                     
             }else {
-              return (
-                       <div className="container">
-                        <h1 className="text-center text-primary loading"> Loading user's data ....... </h1>
-                      </div>
-                      );
-
+              return Loading('Loading Profile ......');
             }
-          } 
-    }
+      } 
   
 
-}
 
 
-const mapStateToProps = (state,ownProps)=>{
+const mapStateToProps = (state,ownProps) => {
   const userId = ownProps.match.params.id;
-
   const auth =state.firebase.auth;
-
   let users = state.firestore.data.users;
   let user = users ? users[userId]: null;
-
-  //console.log(users);
-  //console.log(user);
- 
   if( auth.uid && user ){
-    return {
-      auth,
-      user
-
-    };
-  }else if(auth.uid){
-     return {
-       auth
-     }
-  } else return {};
+      return {
+        auth,
+        user
+      };
+    }else{
+      return {
+        auth
+      }
+    }
 }
 const mapDispatchToProps= (dispatch)=>{
   //console.log('in mapDispatch');
@@ -176,11 +120,8 @@ const mapDispatchToProps= (dispatch)=>{
       } 
 }
 
-
-
 export default  compose 
   (
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect([{collection:'users'}])
-  )
-  (EditProfileImage);
+  )(EditProfileImage);

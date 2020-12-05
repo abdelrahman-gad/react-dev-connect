@@ -1,22 +1,23 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
+import { isActive }  from './helpers'; 
 
-const SignedOutLinks = () =>{
+const SignedOutLinks = ( {history} ) => {
 
  return (
      <ul>
         <li>
-         <NavLink to="/signup">SignUp </NavLink>
+         <NavLink to="/signup"  style={ isActive(history, '/signup') } >SignUp </NavLink>
         </li>
         <li>
-          <NavLink to="/signin"> Login </NavLink>
+          <NavLink to="/signin" style={ isActive(history, '/signin') }> Login </NavLink>
         </li>
          
      </ul>
  );
 }
 
-export default SignedOutLinks;
+export default withRouter(SignedOutLinks);
 
 
 

@@ -14,6 +14,7 @@ import {
             DELETE_EDUCATION_ERROR 
         } 
         from './actions';
+
 export const editProfileImage = ( profileImageUrl ) => {
     return (dispatch,getState,{getFirebase,getFirestore})=>{
         console.log('editprofile image from actions');
@@ -39,6 +40,7 @@ export const editProfile = (editableProfile) => {
           
             
             const authorId  = getState().firebase.auth.uid;
+            console.log(authorId);
             firestore.collection('profiles').doc(authorId).set({
                 location:editableProfile.location,
                 jobTitle:editableProfile.jobTitle,
@@ -46,7 +48,7 @@ export const editProfile = (editableProfile) => {
                 bio:editableProfile.bio,
                 githubUsername:editableProfile.githubUsername,
                 website:editableProfile.website,
-                skills:editableProfile.skillsArr,
+                skills:editableProfile.skills,
                 socialLinks:editableProfile.socialLinks,
                 userHandle:profile.handle,      
                 userId:authorId

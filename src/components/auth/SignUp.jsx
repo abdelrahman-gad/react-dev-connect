@@ -43,16 +43,16 @@ const  SignUp  = ( props ) => {
      <Form className="form">   
         <Field className="form-control"  name="name" type="text" placeholder="name" />
         <p  className="text-danger"> <ErrorMessage name="name"  /></p> 
-        <br/> 
+      
         <Field className="form-control"  name="email" type="email"  placeholder="email" />
         <p  className="text-danger"> <ErrorMessage name="email"  /></p> 
-        <br/> 
+       
         <Field  className="form-control"  name="password" type="password"  placeholder="password" id="password" />
         <p className="text-danger"> <ErrorMessage name="password"   /> </p>
-        <br/>
+        
         <Field  className="form-control"  name="passwordConfirmation" type="password" placeholder="confirm password" />
         <p className="text-danger"> <ErrorMessage name="passwordConfirmation"  /> </p>
-        <br/>
+     
         <button type="submit" className="btn btn-primary" >Submit</button>          
      </Form>
     </Formik>

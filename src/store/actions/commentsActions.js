@@ -14,7 +14,7 @@ export const addComment = (comment) =>{
         let   commentId = uuid4(); 
         const firestore = getFirestore();
          console.log(commentId);
-
+         console.log(comment);
         firestore.collection('comments').doc(commentId).set({
             ...comment,
             commentId:commentId,
@@ -23,7 +23,7 @@ export const addComment = (comment) =>{
           .catch(err=>dispatch({type:ADD_COMMENT_ERROR,payload:err.message}));
 
 
-         let notificationId= uuid4(); 
+         let notificationId = uuid4(); 
 
          // notifiedId 
         let   posts =  getState().firestore.data.posts;

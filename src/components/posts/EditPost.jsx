@@ -17,7 +17,7 @@ class EditPost extends React.Component{
         this.handleChange=this.handleChange.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
     }
-    handleChange=(e)=>{
+    handleChange=(e) => {
         this.setState({
             [e.target.id]:e.target.value
         });
@@ -67,12 +67,8 @@ class EditPost extends React.Component{
 
 
     render(){
-
         const { post } = this.props;
-
-          //console.log(post);
           if(post){
-
               return (
                   <div className="container">
                      <form className="form my-1" onSubmit={this.handleSubmit}>
@@ -92,7 +88,7 @@ class EditPost extends React.Component{
 
     }
 }
-const mapStateToProps = (state ,ownProps )=>{
+const mapStateToProps = (state ,ownProps )=> {
     const auth = state.firebase.auth;
     const postId= ownProps.match.params.id;
     const posts = state.firestore.data.posts;
@@ -111,11 +107,12 @@ const mapStateToProps = (state ,ownProps )=>{
         }
     }else return {};
 }
+
 const mapDispatchToProps = (dispatch,ownProps)=>{
     ////console.log('add post');
     // const  postId = ownProps.match.params.id;
     // console.log(postId); 
-    return{
+    return {
          editPost: (post)=>dispatch(editPost(post))
     }
 }

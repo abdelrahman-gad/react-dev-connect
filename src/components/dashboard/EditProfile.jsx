@@ -300,5 +300,3 @@ export default compose(
   firestoreConnect([{collection:'profiles'}])
 )
 (EditProfile);
-
-

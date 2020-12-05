@@ -1,69 +1,67 @@
-import React, { Component } from 'react';
-
+import React, { useState  } from 'react';
 import { connect } from 'react-redux';
 import {logOut} from '../../store/actions/authActions';
 import {readNotification} from '../../store/actions/notificationsActions';
 import { compose } from 'redux';
-import { NavLink , Redirect } from 'react-router-dom';
+import { NavLink , Redirect , withRouter } from 'react-router-dom';
 import {firestoreConnect} from 'react-redux-firebase';
 import {showReadableDateTime} from './../../utils/utilsFuncs';
-class  SigndInLinks extends Component  {
+import { isActive } from './helpers';
+
+const SigndInLinks  = ( { logOut , readNotification  , notifications , history } )  => {
       
-  constructor(props){
-    super(props);
-    this.handleLogout= this.handleLogout.bind(this);
-  }
-  state={
-    showNotifs:false
-  }
+        const [showNotifs , setShowNotifs] = useState(false);
 
-  handleLogout(e) {
-          e.preventDefault();
-          //console.log(this.props);
-          this.props.logOut();
-         return <Redirect exact to="/"  />              
 
-  }
-  handleShowNotifs(e){
-    e.preventDefault();
-    this.setState({
-      showNotifs:!this.state.showNotifs
-    })
-  }
-  handleReadNotication(e,notificationId){
-    //console.log('handleSeen func');
-    e.preventDefault();
-    const {readNotification } = this.props;
-    readNotification(notificationId);
-  }
-  componentDidUpdate(){
-    //console.log('component has updated');
-  }  
+        const  handleLogout = (e) => {
+                  e.preventDefault();
+                  //console.log(this.props);
+                  logOut();
+                  return <Redirect exact to="/"  />              
+          }
+        const  handleShowNotifs= (e) =>{
+            e.preventDefault();
+            setShowNotifs(!showNotifs);
+          }
+        const  handleReadNotication = (e , notificationId) => {
+            e.preventDefault();
+            readNotification(notificationId);
+        }
+
 
    
- render(){
-      const {notifications} = this.props;
-      //console.log(notifications);
+
+      
       const  unreadNotifications= notifications ? [...notifications.filter(notification=>notification.read === false)]:[]; 
       let unreadNotificationsCount = unreadNotifications ? unreadNotifications.length:0;
-      // console.log(notifications);
+     
       return (
             
     <ul>
         <li>
-          <NavLink exact to="/dashboard"> <i className="fa fa-user"></i> <span className="hide-sm"> Dashboard </span> </NavLink>
+          <NavLink
+             exact 
+             style={ isActive(history, '/dashboard') }
+             to="/dashboard"> 
+            <i className="fa fa-user"></i> 
+            <span className="hide-sm"> Dashboard </span> 
+          </NavLink>
         </li>
         <li>
-          <NavLink exact to="/developers">   Developers </NavLink>
+          <NavLink
+           exact 
+           style={ isActive(history, '/developers') }
+           to="/developers">   Developers </NavLink>
         </li>
         <li>
-          <NavLink  exact to="/posts">Posts</NavLink>
+          <NavLink 
+           exact 
+           style={ isActive(history, '/posts') }
+           to="/posts">Posts</NavLink>
         </li>
-        <li  className="notifs">
-             
+        <li  className="notifs">            
             <button 
-              
-              onClick={(e)=>this.handleShowNotifs(e)}
+              onClick={(e)=>handleShowNotifs(e)}
               id="notifs"
               className="notifs"
               >
@@ -73,52 +71,53 @@ class  SigndInLinks extends Component  {
           </button>
           
           <div
-          
-              className={this.state.showNotifs?"notifs-block show":"notifs-block"}
-              id="notifs-block"
-               
-               >
-              {
-                notifications && notifications.map(notification=>{
-                  return      ( 
-                                <NavLink 
-                                      exact to={notification.notifiableLink}
-                                      key={notification.notificationId}
-                                      className={notification.read?"seen":""} 
-                                      >                             
-                                       <span 
-                                           onClick={(e)=>{this.handleReadNotication(e,notification.notificationId)}}
-                                         > 
-                                          {notification.body}
-                                        </span> 
-                                        <span> at  { showReadableDateTime(notification.createdAt)} </span>
-                                  </NavLink>                            
-                                    );
-                                   })
-              
-              }
+            className={showNotifs?"notifs-block show":"notifs-block"}
+            id="notifs-block"      
+          >
+          {
+            ( notifications && notifications.length >= 1)?notifications.map(notification=>{
+              return      ( 
+                            <NavLink 
+                                  exact to={notification.notifiableLink}
+                                  key={notification.notificationId}
+                                  className={notification.read?"seen":""} 
+                                  >                             
+                                    <span 
+                                        onClick={(e)=>{handleReadNotication(e,notification.notificationId)}}
+                                      > 
+                                      {notification.body}
+                                    </span> 
+                                    <span> at { showReadableDateTime(notification.createdAt)} </span>
+                              </NavLink>                            
+                            );
+                  }):<NavLink 
+                      to="/"
+                      className="seen"
+                    
+                       >                             
+                        <span> 
+                         No notifications yet ):
+                        </span> 
+                      
+                  </NavLink>    
+          }
              
           </div>
         </li>
       
 
-        <form  onSubmit={this.handleLogout} >
+        <form  onSubmit={handleLogout} >
             <button className="logout-btn"> Logout  </button>
         </form>
           
       </ul>
     );
 
- }
 
 }
 
 
 const mapDispatchToProps = (dispatch,ownProps) => {
-  
-  // ownProps
-  //console.log(ownProps);
-   
   return {
     logOut: () => dispatch(logOut()),
     readNotification:(notificationId)=>dispatch(readNotification(notificationId))
@@ -133,7 +132,7 @@ const mapStateToProps = (state)=>{
   //console.log(auth.uid);
   if(notifications){
      notifications = notifications.filter(notification => notification.notifiedId === auth.uid && notification.notifiedId !== notification.notifierId )
-     notifications= notifications.sort( (a,b) => b.createdAt.seconds - a.createdAt.seconds );
+     notifications = notifications.sort( (a,b) => b.createdAt.seconds - a.createdAt.seconds );
    //  console.log(notifications);  
   }
   return {
@@ -143,12 +142,12 @@ const mapStateToProps = (state)=>{
 
 
 
-export default compose(
+export default  withRouter (compose(
   connect(mapStateToProps,mapDispatchToProps),
   firestoreConnect([
      {collection:'notifications'}      
     ])
 )
-(SigndInLinks);
+(SigndInLinks));
 
 

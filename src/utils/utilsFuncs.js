@@ -1,4 +1,6 @@
 
+import moment from 'moment';
+
 
 export  const showReadableDateTime = (createdAt) => {
      
@@ -23,10 +25,9 @@ export  const showReadableDateTime = (createdAt) => {
         readableDateTime = hours+":"+minutes; 
       }
 
-     return readableDateTime;
+     return  moment(readableDateTime).fromNow();
 
 }
-
 
 export  const showReadableDate = (createdAt) => {
      
@@ -52,6 +53,8 @@ const getMonthName= (monthNum) => {
                          ];
    return monthNames[monthNum];
 }
+
+
 
 
 

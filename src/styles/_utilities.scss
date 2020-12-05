@@ -12,18 +12,21 @@
 }
 
 //img
-.round-img {
+.img-rounded{
   border-radius: 50%;
 }
 .user-post-img{
   width: 120px;
+  height: 120px;
 }
+
 .profile-img{
   width: 500px;
   height: 500px;
   margin: 20px auto;  
   border-radius: 50%;
 }
+
 
 .line{
   height: 1px;
@@ -65,7 +68,7 @@
   
 }
 .text-primary {
-  color: $primary-color;
+  color: $primary-color !important;
 }
 .text-danger{
   color:$danger-color;
@@ -105,6 +108,9 @@
   &:hover {
     background-color: lighten($dark-color, 20%);
     color: #fff;
+  }
+  &:focus{
+    @include set-background($primary-color);
   }
   &-primary {
     @include set-background($primary-color);
@@ -165,11 +171,12 @@
 // alerts
 
 .alert {
-  padding: 1.2rem;
-  margin: 1rem;
+  
   opacity: 0.9;
   background: $light-color;
   color: #333;
+  height: 60px;
+  line-height: 40px;
   &.alert-danger {
     @include set-background($danger-color);
   }
@@ -222,7 +229,7 @@ table{
   /* color: #fff; */
   left: 50%;
   transform: translate(-50%,-50%);
-  height: 170px;
+  height: auto;
   margin: auto;
   background-color:#ddd;
   display: none;

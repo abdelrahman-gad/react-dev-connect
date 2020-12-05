@@ -1,8 +1,14 @@
+
+.lg-field{
+  height: 100px;
+}
+
 .form {
   &-group {
     margin: 1.2rem 0;
   }
-
+ 
+ 
   &-text {
     display: block;
     margin-top: 0.3rem;
@@ -25,7 +31,7 @@
   }
   
   .social-input{
-    display: flex;
+    display: block;
     i{
       padding: 0.5rem;
       width: 4rem;

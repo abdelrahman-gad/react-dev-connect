@@ -1,79 +1,59 @@
-import React from 'react';
+import React , { Fragment , useState } from 'react';
 import {connect} from 'react-redux';
 import {addComment} from '../../../store/actions/commentsActions';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
-class AddComment  extends React.Component{
-    state={
-        body:'',
-        postError:''
-    }
-
-
-    constructor(props){
-        super(props);
-       this.handleChange=this.handleChange.bind(this);
-       this.handleSubmit=this.handleSubmit.bind(this);
-    }
-    handleChange=(e)=>{
-        this.setState({
-            [e.target.id]:e.target.value
+const AddComment = (  { addComment , postId , auth } ) => {
+        const initialValues = { comment:'' };
+   
+        const validate = (  ) => Yup.object({
+            comment: Yup.string()
+             .min(3,'minimum comment length is 3 characters' )
+             .required('Required'),
         });
-        //console.log(this.state);
-    }
-
-    handleSubmit=(e)=>{
-        e.preventDefault();
-        const {addComment , postId , auth} = this.props;
-        //console.log(postId);
-        //console.log(auth);
-
-        if(this.state.body.length < 1){
-            this.setState({
-                commentError:'Plz, add comment , then press comment button'
-            });
-        }else{
-             //console.log(postId);
-             //console.log(auth.uid);
-            addComment({
-                    body:this.state.body,
-                    postId:postId,
-                    userId:auth.uid                                 
-                });
-
-
-            this.setState({
-                body:'',
-                commentError:''
-            });
-
-        }
-       
-    }
-
-    render(){
-
-        return (
-          <div className="form">
-            <form   onSubmit={this.handleSubmit}> 
-            <p className="text-danger my-1"> {this.state.commentError} </p>
-
-                <textarea 
-                   name=""
-                   className="comment" 
-                   id="body" 
-                   cols="30" 
-                   rows="5" 
-                   placeholder="add comment on post"
-                   onChange={this.handleChange}
-                   value={this.state.body}
-                   ></textarea>
-                <button type="submit" className="btn"> Comment </button>
-            </form>
-          </div>
-        );
-    }
+         
+        const AddCommentForm = ( ) => {
+          return (
+              <Formik 
+                  initialValues={ initialValues }
+                  validationSchema={validate()}
+                  onSubmit = { (values , { setSubmitting }  )  => {
+                    setTimeout(() => {
+                      console.log('from submit');
+                       const userId = auth.uid;
+                       let comment = {body:values.comment , postId , userId };
+                       addComment(comment);            
+                       values.comment = '';
+                       setSubmitting(false);
+                       toast.success(`You have commented on post successfully `,{
+                         position:toast.POSITION.BOTTOM_RIGHT,
+                         autoClose:8000
+                       });
+                    },400);
+                    }}
+                  >
+                <Form className="form my-1">   
+                  <Field        
+                        name="comment"  
+                        as="textarea"
+                        rows="4"
+                        placeholder="append comment on post ...."    
+                        id="comment"
+                    />
+                    <p  className="text-danger"> <ErrorMessage name="comment" /></p>              
+                    <button type="submit" className="btn btn-dark my-1" >Comment</button>  
+                </Form>   
+              </Formik>
+          );
+        } 
+    return (
+        <Fragment> 
+            {AddCommentForm()}
+        </Fragment>                
+      );
 }
-
 
 const mapDispatchToProps = (dispatch)=>{
     return {
