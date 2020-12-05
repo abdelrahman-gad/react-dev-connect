@@ -38,7 +38,7 @@ const  Developers = props =>  {
                                         <NavLink exact to={"/profile/"+developer.id} target="_parent" className="btn btn-primary">View Profile</NavLink>
                                     </div>
                                         {
-                                        developer.skills !== undefined ?  
+                                        developer.skills !== undefined  && developer.skills.length > 0  ?  
                                         <ul> {developer.skills.split(',').map((skill,i)=>
                                         <li className="text-primary" key={i} >
                                             <i className="fas fa-check mr-1"></i>

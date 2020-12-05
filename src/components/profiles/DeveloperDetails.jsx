@@ -11,8 +11,6 @@ const  DeveloperDetailsNew =  ( { developer  }) => {
 
    //console.log(developer);
   
-   const  [developerInfo , setDeveloperInfo] = useState({});
-   const  [loading , setLoading ] = useState(true);
 
    const  handleUrl = (e,url ) => {
           e.preventDefault();
@@ -60,9 +58,9 @@ const  DeveloperDetailsNew =  ( { developer  }) => {
                          {developer.bio}
                         </p>
                         <div className="line"></div>
-                        <h2 className="text-primary text-center">Skill Set</h2>
+                        <h2 className="text-primary text-center">Skill </h2>
                        <div className="skills">
-                           {developer.skills && developer.skills.split(',').map((skill,i)=>{
+                           {developer.skills.length > 0 && developer.skills.split(',').map((skill,i)=>{
                              return    <div className="p-1" key={i}><i className="fas fa-check"></i> {skill} </div>         
                            })}
                        

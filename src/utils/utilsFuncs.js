@@ -2,7 +2,7 @@
 import moment from 'moment';
 
 
-export  const showReadableDateTime = (createdAt) => {
+export  const showReadableDateTime = ( createdAt ) => {
      
     // let showTime = showTime; 
     let nowDateDay = new Date().getDate();
