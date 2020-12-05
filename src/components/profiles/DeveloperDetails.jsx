@@ -60,7 +60,7 @@ const  DeveloperDetailsNew =  ( { developer  }) => {
                         <div className="line"></div>
                         <h2 className="text-primary text-center">Skill </h2>
                        <div className="skills">
-                           {developer.skills.length > 0 && developer.skills.split(',').map((skill,i)=>{
+                           {developer.skills?.length > 0 && developer.skills.split(',').map((skill,i)=>{
                              return    <div className="p-1" key={i}><i className="fas fa-check"></i> {skill} </div>         
                            })}
                        
@@ -109,7 +109,6 @@ const  DeveloperDetailsNew =  ( { developer  }) => {
    
     return (
            <section className="container">
-                    <h1> Developer Details New </h1>
                     { ( Object.keys(developer).length >= 1) ? showDeveloper():showLoading(true) }
             </section>
         );    
