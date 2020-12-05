@@ -5,7 +5,7 @@ import {compose } from 'redux';
 import {deleteExperience} from '../../store/actions/profilesActions';
 import {confirmAlert} from 'react-confirm-alert';
 import { toast } from 'react-toastify';
-import {formatDate} from '../recources/UI/helpers';
+// import {formatDate} from '../recources/UI/helpers';
 
 
 const  Experiences = ( {deleteExperience , experiences } ) =>{
@@ -54,7 +54,7 @@ const  Experiences = ( {deleteExperience , experiences } ) =>{
                         <th>company</th>
                         <th className="hide-sm">jobTitle</th>
                         <th className="hide-sm">location</th>
-                        <th className="hide-sm">duration</th>
+                        {/* <th className="hide-sm">duration</th> */}
                      </tr>
                  </thead>
                  <tbody>
@@ -66,7 +66,7 @@ const  Experiences = ( {deleteExperience , experiences } ) =>{
                                     <td> {userExperience.jobTitle} </td>
                                     <td> {userExperience.location} </td>
 
-                                    <td>   {formatDate(userExperience.createdAt.toDate())}/  {formatDate(userExperience.createdAt.toDate())} </td>
+                                    {/* <td>   { formatDate() JSON.stringify(createdAt) }/  {formatDate(userExperience?.createdAt?.toDate())} </td> */}
                                     <td>
                                         <button 
                                             className="btn btn-danger" 
