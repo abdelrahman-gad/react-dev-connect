@@ -27,7 +27,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.7rem 2rem;
+  padding: 0.6rem;
   position: fixed;
   z-index: 1;
   width: 100%;
@@ -36,6 +36,7 @@ img {
   opacity: 0.9;
   ul {
     display: flex;
+    margin-top: 8px;
   }
   a  {
     padding: 0.45rem;
@@ -67,8 +68,8 @@ img {
     }
 }
 .notifs-number{
-  font-size: 22px;
-  color: black;
+  font-size: 16px;
+  color: #ddd;
   width: 22px;
   height: 30px;
   text-align: center;
@@ -79,7 +80,7 @@ img {
 }
 .notifs-block{
   position: absolute;
-  top:36px;
+  top:46px;
   left:0; 
   height: auto;
   min-height: 30px;
@@ -284,6 +285,7 @@ img {
           }
           .user-img{
             width: 120px;
+            border-radius: 50%;
           }
           .body{
             padding: 2rem;
